@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- CS0618: the tests call the members KosherJava marks deprecated (lechumra-only zmanim, SunTimesCalculator) on purpose -->
+    <NoWarn>$(NoWarn);CS0618;CS1591;CS8600;CS8602;CS8604;CS8625;CS8629</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Kosher.Zmanim\Kosher.Zmanim.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Golden\Data\*.gz" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

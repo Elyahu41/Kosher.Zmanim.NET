@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>Kosher.Zmanim</RootNamespace>
+    <AssemblyName>Kosher.Zmanim</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS0618: the library itself uses members KosherJava deprecates (for lechumra-only zmanim), exactly as the Java code does -->
+    <NoWarn>$(NoWarn);CS0618</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet">
+    <PackageId>Kosher.Zmanim</PackageId>
+    <!-- The version tracks the KosherJava release this port matches -->
+    <Version>3.1.0</Version>
+    <Title>Kosher Zmanim .NET</Title>
+    <Authors>Elyahu41</Authors>
+    <Company>Elyahu41</Company>
+    <Product>Kosher.Zmanim.NET</Product>
+    <Description>A complete, accurate port of the KosherJava Zmanim API (3.1.0) to .NET. Calculates sunrise, sunset, twilight and Jewish halachic times (zmanim) with the NOAA, NREL SPA, Jean Meeus and USNO algorithms, and provides the Jewish calendar (holidays, parshah, daf yomi, molad, tefila rules) and Hebrew date formatting. Uses only native .NET types (DateTimeOffset, DateOnly, TimeOnly, TimeSpan, TimeZoneInfo) - no NodaTime. Results are verified against KosherJava itself.</Description>
+    <Copyright>Copyright © 2004-2026 Eliyahu Hershfeld (KosherJava). .NET port copyright © 2026 Elyahu41.</Copyright>
+    <PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Elyahu41/Kosher.Zmanim.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Elyahu41/Kosher.Zmanim.NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>zmanim;kosherjava;jewish;hebrew;calendar;halacha;sunrise;sunset;solar;astronomy;noaa;spa;parsha;daf-yomi;molad;luach</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>https://github.com/Elyahu41/Kosher.Zmanim.NET/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Kosher.Zmanim.Internal" />
+    <InternalsVisibleTo Include="Kosher.Zmanim.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

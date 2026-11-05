@@ -1,0 +1,13 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+*.nupkg
+*.snupkg
+TestResults/
+artifacts/
+tools/golden/*.class
+tools/golden/com/
