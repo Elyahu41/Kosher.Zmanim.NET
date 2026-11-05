@@ -5,6 +5,18 @@ port of. See the [KosherJava CHANGELOG](https://github.com/KosherJava/zmanim/blo
 calculations themselves.
 
 ## Unreleased
+* Renamed members whose names referred to Java types or used Java casing, keeping the old names as `[Obsolete]` aliases so
+  existing code still compiles:
+  * `JewishCalendar.GetMoladAsInstant()` → `GetMoladAsDateTimeOffset()`, `GetTekufaAsInstant(bool)` → `GetTekufaAsDateTimeOffset(bool)`
+  * `AstronomicalCalendar.GetInstantFromTime(...)` (protected) → `GetDateTimeOffsetFromTime(...)`
+  * `ZmanimFormatter.FormatInstant(...)` → `Format(DateTimeOffset, TimeZoneInfo)` (plus a new `Format(DateTimeOffset)` that uses
+    the formatter's `TimeZone`), `FormatXSDateTime` → `FormatXsdDateTime`, `FormatXSDDurationTime` → `FormatXsdDurationTime`,
+    `SetTimeFormat(int)` → `TimeFormat` property
+  * `HebrewDateFormatter.Get/SetTransliteratedParshiyosList` → `TransliteratedParshiyosList` property
+  * `Daf.SetMasechtaTransliterated` / `SetYerushalmiMasechtaTransliterated` / `GetYerushalmiMasechtosTransliterated()` /
+    `GetYerushalmiMasechtos()` → static `BavliMasechtosTransliterated`, `YerushalmiMasechtosTransliterated` and
+    `YerushalmiMasechtos` properties
+  * Parameters named `zonedDateTime` are now `dateTime`.
 * Documentation: replaced the remaining Java terms in the XML documentation (`Instant`, `ZonedDateTime`, `LocalDate`, `Calendar`,
   `IllegalArgumentException`, `String`, Java getter names) with their .NET equivalents, filled in empty `<returns>` tags, documented
   `Clone()`, and converted HTML lists to XML documentation `<list>` elements so they render in IntelliSense.

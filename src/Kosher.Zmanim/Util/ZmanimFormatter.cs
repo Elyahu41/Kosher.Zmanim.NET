@@ -102,12 +102,12 @@ public class ZmanimFormatter
     ///         <item><see cref="XsdDurationFormat"/> will format the time as : "<c>PT1H30M</c>", and half an hour as "<c>PT30M</c>".</item>
     ///         </list></param>
     /// <param name="dateTimeFormat">a .NET <see href="https://learn.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings">custom
-    ///         date and time format string</see> used by <see cref="FormatInstant"/>, such as <c>"h:mm:ss"</c>.</param>
+    ///         date and time format string</see> used by <see cref="Format(DateTimeOffset, TimeZoneInfo)"/>, such as <c>"h:mm:ss"</c>.</param>
     /// <param name="timeZone">the <see cref="TimeZoneInfo"/> times are formatted in.</param>
     public ZmanimFormatter(int timeFormat, string dateTimeFormat, TimeZoneInfo timeZone)
     {
         TimeZone = timeZone;
-        SetTimeFormat(timeFormat);
+        TimeFormat = timeFormat;
         DateTimeFormat = dateTimeFormat;
     }
 
@@ -117,7 +117,7 @@ public class ZmanimFormatter
     public TimeZoneInfo TimeZone { get; set; }
 
     /// <summary>
-    /// The .NET custom date and time format string used by <see cref="FormatInstant"/> (the equivalent of the
+    /// The .NET custom date and time format string used by <see cref="Format(DateTimeOffset, TimeZoneInfo)"/> (the equivalent of the
     /// <c>DateTimeFormatter</c> in KosherJava).
     /// </summary>
     public string DateTimeFormat { get; set; }
@@ -128,12 +128,25 @@ public class ZmanimFormatter
     public IFormatProvider FormatProvider { get; set; } = CultureInfo.InvariantCulture;
 
     /// <summary>
-    /// Sets the time format to use for formatting <see cref="TimeSpan"/>s.
+    /// The time format constant used for formatting <see cref="TimeSpan"/>s (<see cref="SexagesimalXsdFormat"/>,
+    /// <see cref="SexagesimalFormat"/>, <see cref="SexagesimalSecondsFormat"/>, <see cref="SexagesimalMillisFormat"/> or
+    /// <see cref="XsdDurationFormat"/>). See <see cref="ZmanimFormatter(int, string, TimeZoneInfo)"/> for documentation on the formats.
     /// </summary>
-    /// <param name="format">the format constant to use. See <see cref="ZmanimFormatter(int, string, TimeZoneInfo)"/> for documentation
-    ///         on the formats.</param>
+    /// <exception cref="ArgumentException">if the value set is not one of the format constants.</exception>
+    public int TimeFormat
+    {
+        get => timeFormat;
+        set => ApplyTimeFormat(value);
+    }
+
+    /// <summary>The KosherJava setter for <see cref="TimeFormat"/>.</summary>
+    /// <param name="format">the format constant to use.</param>
     /// <exception cref="ArgumentException">if the format is not one of the format constants.</exception>
-    public void SetTimeFormat(int format)
+    [Obsolete("Use the TimeFormat property; SetTimeFormat is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public void SetTimeFormat(int format) => TimeFormat = format;
+
+    private void ApplyTimeFormat(int format)
     {
         switch (format)
         {
@@ -153,7 +166,7 @@ public class ZmanimFormatter
                 break; // the settings are N/A for this
             default:
                 throw new ArgumentException("An invalid time format of " + format +
-                    " was set. Please see the documentation for the list of valid formats.", nameof(format));
+                    " was set. Please see the documentation for the list of valid formats.", nameof(TimeFormat));
         }
         timeFormat = format;
     }
@@ -183,7 +196,7 @@ public class ZmanimFormatter
         TimeSpan value = duration ?? TimeSpan.Zero;
         if (timeFormat == XsdDurationFormat)
         {
-            return FormatXSDDurationTime(value);
+            return FormatXsdDurationTime(value);
         }
         var sb = new StringBuilder();
         if (value < TimeSpan.Zero)
@@ -214,15 +227,30 @@ public class ZmanimFormatter
     /// <summary>
     /// Formats a <see cref="DateTimeOffset"/> using this class's <see cref="DateTimeFormat"/>.
     /// </summary>
-    /// <param name="instant">the <see cref="DateTimeOffset"/> to format.</param>
+    /// <param name="dateTime">the <see cref="DateTimeOffset"/> to format.</param>
     /// <param name="timeZone">the <see cref="TimeZoneInfo"/> used to help format based on the <see cref="DateTimeOffset"/>'s DST and
     ///         other settings.</param>
     /// <returns>the formatted string</returns>
-    /// <seealso cref="FormatXSDateTime"/>
-    public string FormatInstant(DateTimeOffset instant, TimeZoneInfo timeZone)
+    /// <seealso cref="FormatXsdDateTime"/>
+    public string Format(DateTimeOffset dateTime, TimeZoneInfo timeZone)
     {
-        return JavaTime.InZone(instant, timeZone).ToString(DateTimeFormat, FormatProvider);
+        return JavaTime.InZone(dateTime, timeZone).ToString(DateTimeFormat, FormatProvider);
     }
+
+    /// <summary>
+    /// Formats a <see cref="DateTimeOffset"/> in this formatter's <see cref="TimeZone"/> using its <see cref="DateTimeFormat"/>.
+    /// </summary>
+    /// <param name="dateTime">the <see cref="DateTimeOffset"/> to format.</param>
+    /// <returns>the formatted string</returns>
+    public string Format(DateTimeOffset dateTime) => Format(dateTime, TimeZone);
+
+    /// <summary>The KosherJava name of <see cref="Format(DateTimeOffset, TimeZoneInfo)"/>.</summary>
+    /// <param name="instant">the <see cref="DateTimeOffset"/> to format.</param>
+    /// <param name="timeZone">the <see cref="TimeZoneInfo"/> to format in.</param>
+    /// <returns>the formatted string</returns>
+    [Obsolete("Use Format(DateTimeOffset, TimeZoneInfo); FormatInstant is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public string FormatInstant(DateTimeOffset instant, TimeZoneInfo timeZone) => Format(instant, timeZone);
 
     /// <summary>
     /// Format the <see cref="DateTimeOffset"/> using the format "<c>yyyy-MM-dd'T'HH:mm:ssK</c>" (xsd:dateTime) in
@@ -230,10 +258,17 @@ public class ZmanimFormatter
     /// </summary>
     /// <param name="instant">the <see cref="DateTimeOffset"/> to format.</param>
     /// <returns>the <see cref="DateTimeOffset"/> formatted using the format "<c>yyyy-MM-dd'T'HH:mm:ssK</c>".</returns>
-    public string FormatXSDateTime(DateTimeOffset instant)
+    public string FormatXsdDateTime(DateTimeOffset instant)
     {
         return FormatXsd(instant, TimeZone);
     }
+
+    /// <summary>The KosherJava name of <see cref="FormatXsdDateTime"/>.</summary>
+    /// <param name="instant">the <see cref="DateTimeOffset"/> to format.</param>
+    /// <returns>the formatted string</returns>
+    [Obsolete("Use FormatXsdDateTime; FormatXSDateTime is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public string FormatXSDateTime(DateTimeOffset instant) => FormatXsdDateTime(instant);
 
     /// <summary>
     /// This returns the xml representation of an xsd:duration object. This uses the ISO-8601 format that
@@ -241,10 +276,17 @@ public class ZmanimFormatter
     /// </summary>
     /// <param name="duration">the duration to format</param>
     /// <returns>the xsd:duration ISO-8601 formatted string</returns>
-    public string FormatXSDDurationTime(TimeSpan? duration)
+    public string FormatXsdDurationTime(TimeSpan? duration)
     {
         return duration == null ? string.Empty : JavaTime.DurationToString(duration);
     }
+
+    /// <summary>The KosherJava name of <see cref="FormatXsdDurationTime"/>.</summary>
+    /// <param name="duration">the duration to format</param>
+    /// <returns>the xsd:duration ISO-8601 formatted string</returns>
+    [Obsolete("Use FormatXsdDurationTime; FormatXSDDurationTime is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public string FormatXSDDurationTime(TimeSpan? duration) => FormatXsdDurationTime(duration);
 
     /// <summary>
     /// Formats a time in xsd:dateTime format with a <c>Z</c> offset for UTC (matching Java's <c>XXX</c> pattern).

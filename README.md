@@ -103,7 +103,7 @@ There are also the convenience classes from KosherJava:
 ```csharp
 var formatter = new ZmanimFormatter(TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
 formatter.Format(new TimeSpan(1, 2, 3)); // "1:02:03". See the ZmanimFormatter constructor for the other formats
-formatter.FormatInstant(sunrise.Value, geoLocation.TimeZone); // "h:mm:ss" by default, set DateTimeFormat to customize
+formatter.Format(sunrise.Value); // in the formatter's TimeZone, "h:mm:ss" by default, set DateTimeFormat to customize
 czc.ToString(); // all the zmanim of the day as XML. czc.ToJson() for JSON
 
 var zman = new Zman(DateTimeOffset.Now, "Sunrise"); // A wrapper class for zmanim that is mostly intended to allow sorting collections of astronomical times.
@@ -177,6 +177,10 @@ the usual .NET naming conventions applied:
   `getJewishYear()` is `JewishYear`, `setHebrewFormat(true)` is `IsHebrewFormat = true`). A few names had to change because .NET does
   not allow a member to have the name of its class: `Zman.getZman()` is `Zman.Time` and `Daf.getDaf()` is `Daf.DafNumber`;
   `GeoLocation.getZoneId()` is `GeoLocation.TimeZone`.
+* Names that refer to Java types use the .NET type instead: `getMoladAsInstant()` is `GetMoladAsDateTimeOffset()`,
+  `getTekufaAsInstant()` is `GetTekufaAsDateTimeOffset()`, `ZmanimFormatter.formatInstant()` is `ZmanimFormatter.Format()`, and
+  `formatXSDateTime()` / `formatXSDDurationTime()` are `FormatXsdDateTime()` / `FormatXsdDurationTime()`. The KosherJava names
+  still compile but are marked `[Obsolete]`.
 * `java.time.Instant` is `DateTimeOffset?` (in the location's offset), `Duration` is `TimeSpan?`, `LocalDate` is `DateOnly`,
   `LocalTime` is `TimeOnly` and `ZoneId` is `TimeZoneInfo`.
 * `JewishDate.getDayOfWeek()` keeps the KosherJava numbering (1 = Sunday through 7 = Shabbos).

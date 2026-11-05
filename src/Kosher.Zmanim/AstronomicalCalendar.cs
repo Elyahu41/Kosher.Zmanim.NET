@@ -120,7 +120,7 @@ public class AstronomicalCalendar
         }
         else
         {
-            return GetInstantFromTime(sunrise, SolarEvent.Sunrise);
+            return GetDateTimeOffsetFromTime(sunrise, SolarEvent.Sunrise);
         }
     }
 
@@ -145,7 +145,7 @@ public class AstronomicalCalendar
         }
         else
         {
-            return GetInstantFromTime(sunrise, SolarEvent.Sunrise);
+            return GetDateTimeOffsetFromTime(sunrise, SolarEvent.Sunrise);
         }
     }
 
@@ -210,7 +210,7 @@ public class AstronomicalCalendar
         }
         else
         {
-            return GetInstantFromTime(sunset, SolarEvent.Sunset);
+            return GetDateTimeOffsetFromTime(sunset, SolarEvent.Sunset);
         }
     }
 
@@ -234,7 +234,7 @@ public class AstronomicalCalendar
         }
         else
         {
-            return GetInstantFromTime(sunset, SolarEvent.Sunset);
+            return GetDateTimeOffsetFromTime(sunset, SolarEvent.Sunset);
         }
     }
 
@@ -303,7 +303,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetSunriseOffsetByDegrees(double offsetZenith)
     {
         double dawn = GetUTCSunrise(offsetZenith);
-        return double.IsNaN(dawn) ? null : GetInstantFromTime(dawn, SolarEvent.Sunrise);
+        return double.IsNaN(dawn) ? null : GetDateTimeOffsetFromTime(dawn, SolarEvent.Sunrise);
     }
 
     /// <summary>
@@ -319,7 +319,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetSunsetOffsetByDegrees(double offsetZenith)
     {
         double sunset = GetUTCSunset(offsetZenith);
-        return double.IsNaN(sunset) ? null : GetInstantFromTime(sunset, SolarEvent.Sunset);
+        return double.IsNaN(sunset) ? null : GetDateTimeOffsetFromTime(sunset, SolarEvent.Sunset);
     }
 
     /// <summary>
@@ -460,7 +460,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetSunTransit()
     {
         double noon = AstronomicalCalculator.GetCachedUTCNoon(GetAdjustedLocalDate(), GeoLocation);
-        return GetInstantFromTime(noon, SolarEvent.Noon);
+        return GetDateTimeOffsetFromTime(noon, SolarEvent.Noon);
     }
 
     /// <summary>
@@ -488,7 +488,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetSolarMidnight()
     {
         double noon = AstronomicalCalculator.GetCachedUTCMidnight(GetAdjustedLocalDate(), GeoLocation);
-        return GetInstantFromTime(noon, SolarEvent.Midnight);
+        return GetDateTimeOffsetFromTime(noon, SolarEvent.Midnight);
     }
 
     /// <summary>
@@ -554,7 +554,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetTimeAtAzimuth90Or270(double azimuth)
     {
         double rawAzimuth = AstronomicalCalculator.GetTimeAtAzimuth(GetAdjustedLocalDate(), GeoLocation, azimuth);
-        return GetInstantFromTime(rawAzimuth, (azimuth == 90) ? SolarEvent.Sunrise : SolarEvent.Sunset);
+        return GetDateTimeOffsetFromTime(rawAzimuth, (azimuth == 90) ? SolarEvent.Sunrise : SolarEvent.Sunset);
     }
 
     /// <summary>
@@ -563,7 +563,7 @@ public class AstronomicalCalendar
     /// <param name="time">The time to be set as the time for the <see cref="DateTimeOffset"/>. The time expected is in the format: 18.75 for 6:45:00 PM.</param>
     /// <param name="solarEvent">the type of <see cref="SolarEvent"/></param>
     /// <returns>The <see cref="DateTimeOffset"/> representation of the time double, or <c>null</c> if it is <see cref="double.NaN"/></returns>
-    protected virtual DateTimeOffset? GetInstantFromTime(double time, SolarEvent solarEvent)
+    protected virtual DateTimeOffset? GetDateTimeOffsetFromTime(double time, SolarEvent solarEvent)
     {
         if (double.IsNaN(time))
         {
@@ -922,6 +922,14 @@ public class AstronomicalCalendar
         clone.AstronomicalCalculator = AstronomicalCalculator.Clone(); // likely not needed
         return clone;
     }
+
+    /// <summary>The KosherJava name of <see cref="GetDateTimeOffsetFromTime"/>.</summary>
+    /// <param name="time">see <see cref="GetDateTimeOffsetFromTime"/>.</param>
+    /// <param name="solarEvent">see <see cref="GetDateTimeOffsetFromTime"/>.</param>
+    /// <returns>the result of <see cref="GetDateTimeOffsetFromTime"/>.</returns>
+    [Obsolete("Use GetDateTimeOffsetFromTime(double, SolarEvent); GetInstantFromTime is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    protected DateTimeOffset? GetInstantFromTime(double time, SolarEvent solarEvent) => GetDateTimeOffsetFromTime(time, solarEvent);
 
     /// <summary>
     /// Returns <paramref name="time"/> expressed in the offset of <see cref="GeoLocation"/>'s <see cref="Util.GeoLocation.TimeZone"/>

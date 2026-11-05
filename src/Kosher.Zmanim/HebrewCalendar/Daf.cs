@@ -115,21 +115,31 @@ public class Daf : IEquatable<Daf>
     /// Kinnim, Tamid, Midos and Niddah.
     /// </summary>
     /// <returns>the transliterated name of the <em>masechta</em> (tractate) of the Daf Yomi such as Berachos.</returns>
-    /// <seealso cref="SetMasechtaTransliterated"/>
+    /// <seealso cref="BavliMasechtosTransliterated"/>
     public string GetMasechtaTransliterated()
     {
         return masechtosBavliTransliterated[masechtaNumber];
     }
 
     /// <summary>
-    /// Setter method to allow overriding of the default list of <em>masechtos</em> transliterated into Latin chars.
-    /// The default values use Ashkenazi American English transliteration.
+    /// The list of Bavli <em>masechtos</em> transliterated into Latin chars, used by <see cref="GetMasechtaTransliterated"/>.
+    /// The default values use Ashkenazi American English transliteration. Set it to override them (for example with a
+    /// <em>Sephardi</em> transliteration). The list is shared by all <see cref="Daf"/> instances.
     /// </summary>
-    /// <param name="masechtosBavliTransliterated">the list of transliterated Bavli <em>masechtos</em> to set.</param>
     /// <seealso cref="GetMasechtaTransliterated"/>
+    public static string[] BavliMasechtosTransliterated
+    {
+        get => masechtosBavliTransliterated;
+        set => masechtosBavliTransliterated = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    /// <summary>The KosherJava setter for <see cref="BavliMasechtosTransliterated"/>.</summary>
+    /// <param name="masechtosBavliTransliterated">the list of transliterated Bavli <em>masechtos</em> to set.</param>
+    [Obsolete("Use the static BavliMasechtosTransliterated property; SetMasechtaTransliterated is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public void SetMasechtaTransliterated(string[] masechtosBavliTransliterated)
     {
-        Daf.masechtosBavliTransliterated = masechtosBavliTransliterated;
+        BavliMasechtosTransliterated = masechtosBavliTransliterated;
     }
 
     /// <summary>
@@ -159,33 +169,41 @@ public class Daf : IEquatable<Daf>
     }
 
     /// <summary>
-    /// Setter method to allow overriding of the default list of Yerushalmi <em>masechtos</em> transliterated into Latin chars.
-    /// The default uses Ashkenazi American English transliteration.
+    /// The list of Yerushalmi <em>masechtos</em> transliterated into Latin chars, used by
+    /// <see cref="GetYerushalmiMasechtaTransliterated"/>. The default uses Ashkenazi American English transliteration. Set it to
+    /// override them. The list is shared by all <see cref="Daf"/> instances.
     /// </summary>
+    public static string[] YerushalmiMasechtosTransliterated
+    {
+        get => masechtosYerushalmiTransliterated;
+        set => masechtosYerushalmiTransliterated = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    /// <summary>
+    /// The Hebrew names of the Yerushalmi <em>masechtos</em> (tractates), used by <see cref="GetYerushalmiMasechta"/>.
+    /// </summary>
+    public static string[] YerushalmiMasechtos => masechtosYerushalmi;
+
+    /// <summary>The KosherJava setter for <see cref="YerushalmiMasechtosTransliterated"/>.</summary>
     /// <param name="masechtosYerushalmiTransliterated">the list of transliterated Yerushalmi <em>masechtos</em> to set.</param>
+    [Obsolete("Use the static YerushalmiMasechtosTransliterated property; SetYerushalmiMasechtaTransliterated is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public void SetYerushalmiMasechtaTransliterated(string[] masechtosYerushalmiTransliterated)
     {
-        Daf.masechtosYerushalmiTransliterated = masechtosYerushalmiTransliterated;
+        YerushalmiMasechtosTransliterated = masechtosYerushalmiTransliterated;
     }
 
-    /// <summary>
-    /// Getter method to allow retrieving the list of Yerushalmi <em>masechtos</em> transliterated into Latin chars.
-    /// The default uses Ashkenazi American English transliteration.
-    /// </summary>
+    /// <summary>The KosherJava getter for <see cref="YerushalmiMasechtosTransliterated"/>.</summary>
     /// <returns>the array of transliterated <em>masechta</em> (tractate) names of the Daf Yomi Yerushalmi.</returns>
-    public static string[] GetYerushalmiMasechtosTransliterated()
-    {
-        return masechtosYerushalmiTransliterated;
-    }
+    [Obsolete("Use the YerushalmiMasechtosTransliterated property; GetYerushalmiMasechtosTransliterated() is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static string[] GetYerushalmiMasechtosTransliterated() => YerushalmiMasechtosTransliterated;
 
-    /// <summary>
-    /// Getter method to allow retrieving the list of Yerushalmi <em>masechtos</em>.
-    /// </summary>
+    /// <summary>The KosherJava getter for <see cref="YerushalmiMasechtos"/>.</summary>
     /// <returns>the array of Hebrew <em>masechta</em> (tractate) names of the Daf Yomi Yerushalmi.</returns>
-    public static string[] GetYerushalmiMasechtos()
-    {
-        return masechtosYerushalmi;
-    }
+    [Obsolete("Use the YerushalmiMasechtos property; GetYerushalmiMasechtos() is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static string[] GetYerushalmiMasechtos() => YerushalmiMasechtos;
 
     /// <summary>
     /// Returns the Yerushalmi <em>masechta</em> (tractate) of the Daf Yomi in Hebrew. As an example, it will return ברכות for Berachos.

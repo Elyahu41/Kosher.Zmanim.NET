@@ -3197,13 +3197,13 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
         {
             return null;
         }
-        DateTimeOffset? molad = GetMoladBasedTime(jewishCalendar.GetMoladAsInstant(), null, null, true);
+        DateTimeOffset? molad = GetMoladBasedTime(jewishCalendar.GetMoladAsDateTimeOffset(), null, null, true);
 
         // deal with molad that happens on the end of the previous month
         if (molad == null && jewishCalendar.JewishDayOfMonth > 26)
         {
             jewishCalendar.PlusMonths(1);
-            molad = GetMoladBasedTime(jewishCalendar.GetMoladAsInstant(), null, null, true);
+            molad = GetMoladBasedTime(jewishCalendar.GetMoladAsDateTimeOffset(), null, null, true);
         }
         return ToZone(molad);
     }

@@ -571,8 +571,8 @@ public class JewishCalendar : JewishDate
     /// <summary>
     /// A constructor that initializes the date to the <see cref="DateTimeOffset"/> parameter.
     /// </summary>
-    /// <param name="zonedDateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
-    public JewishCalendar(DateTimeOffset zonedDateTime) : base(zonedDateTime)
+    /// <param name="dateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
+    public JewishCalendar(DateTimeOffset dateTime) : base(dateTime)
     {
     }
 
@@ -1633,7 +1633,7 @@ public class JewishCalendar : JewishDate
     /// <see cref="TimeZoneInfo.ConvertTime(DateTimeOffset, TimeZoneInfo)"/> to display it in another time zone.
     /// </summary>
     /// <returns>the <see cref="DateTimeOffset"/> representing the moment of the <em>molad</em> in Yerushalayim standard time (GMT + 2), expressed in UTC</returns>
-    public virtual DateTimeOffset? GetMoladAsInstant()
+    public virtual DateTimeOffset? GetMoladAsDateTimeOffset()
     {
         JewishDate molad = GetMolad();
 
@@ -1669,7 +1669,7 @@ public class JewishCalendar : JewishDate
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana3Days()"/>
     public virtual DateTimeOffset? GetTchilasZmanKidushLevana3Days()
     {
-        return GetMoladAsInstant().Plus(JavaTime.OfHours(72)); // 3 days after the molad
+        return GetMoladAsDateTimeOffset().Plus(JavaTime.OfHours(72)); // 3 days after the molad
     }
 
     /// <summary>
@@ -1684,7 +1684,7 @@ public class JewishCalendar : JewishDate
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     public virtual DateTimeOffset? GetTchilasZmanKidushLevana7Days()
     {
-        return GetMoladAsInstant().Plus(JavaTime.OfHours(168)); // 7 days after the molad
+        return GetMoladAsDateTimeOffset().Plus(JavaTime.OfHours(168)); // 7 days after the molad
     }
 
     /// <summary>
@@ -1702,7 +1702,7 @@ public class JewishCalendar : JewishDate
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     public virtual DateTimeOffset? GetSofZmanKidushLevanaBetweenMoldos()
     {
-        DateTimeOffset? molad = GetMoladAsInstant();
+        DateTimeOffset? molad = GetMoladAsDateTimeOffset();
 
         // Duration for half of the lunar month:
         // 14 days, 18 hours, 22 minutes, 1 second, 666 milliseconds
@@ -1733,7 +1733,7 @@ public class JewishCalendar : JewishDate
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     public virtual DateTimeOffset? GetSofZmanKidushLevana15Days()
     {
-        return GetMoladAsInstant().Plus(JavaTime.OfHours(24 * 15));
+        return GetMoladAsDateTimeOffset().Plus(JavaTime.OfHours(24 * 15));
     }
 
     /// <summary>
@@ -1775,7 +1775,7 @@ public class JewishCalendar : JewishDate
     /// <seealso cref="TefilaRules.IsVeseinTalUmatarStartingTonight"/>
     /// <seealso cref="TefilaRules.IsYaalehVeyavoRecited"/>
     /// <seealso cref="GetTekufa"/>
-    /// <seealso cref="GetTekufaAsInstant"/>
+    /// <seealso cref="GetTekufaAsDateTimeOffset"/>
     public virtual int GetTekufasTishreiElapsedDays()
     {
         // Days since Rosh Hashana year 1. Add 1/2 day as the first tekufas tishrei was 9 hours into the day. This allows all
@@ -1843,7 +1843,7 @@ public class JewishCalendar : JewishDate
     /// <returns>a <see cref="DateTimeOffset"/> with the time that the <em>tekufa</em> (season) changes or a <c>null</c> on a day with no <em>tekufa</em>
     ///         change.</returns>
     /// <seealso cref="GetTekufa"/>
-    public virtual DateTimeOffset? GetTekufaAsInstant(bool useLocalMeanTime)
+    public virtual DateTimeOffset? GetTekufaAsDateTimeOffset(bool useLocalMeanTime)
     {
         double? tekufa = GetTekufa();
         if (tekufa is not double hours)
@@ -1893,6 +1893,19 @@ public class JewishCalendar : JewishDate
         int holidayIndex = GetYomTovIndex();
         return holidayIndex == IsruChag;
     }
+
+    /// <summary>The KosherJava name of <see cref="GetMoladAsDateTimeOffset"/>.</summary>
+    /// <returns>the result of <see cref="GetMoladAsDateTimeOffset"/>.</returns>
+    [Obsolete("Use GetMoladAsDateTimeOffset(); GetMoladAsInstant is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public DateTimeOffset? GetMoladAsInstant() => GetMoladAsDateTimeOffset();
+
+    /// <summary>The KosherJava name of <see cref="GetTekufaAsDateTimeOffset"/>.</summary>
+    /// <param name="useLocalMeanTime">see <see cref="GetTekufaAsDateTimeOffset"/>.</param>
+    /// <returns>the result of <see cref="GetTekufaAsDateTimeOffset"/>.</returns>
+    [Obsolete("Use GetTekufaAsDateTimeOffset(bool); GetTekufaAsInstant is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public DateTimeOffset? GetTekufaAsInstant(bool useLocalMeanTime) => GetTekufaAsDateTimeOffset(useLocalMeanTime);
 
     /// <summary>
     /// Creates a copy of this <see cref="JewishCalendar"/>, including its <see cref="InIsrael"/>, <see cref="IsMukafChoma"/> and

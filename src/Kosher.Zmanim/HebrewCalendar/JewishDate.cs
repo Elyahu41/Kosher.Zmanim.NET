@@ -841,10 +841,10 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// <summary>
     /// A constructor that initializes the date to the <see cref="DateTimeOffset"/> parameter.
     /// </summary>
-    /// <param name="zonedDateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
-    public JewishDate(DateTimeOffset zonedDateTime)
+    /// <param name="dateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
+    public JewishDate(DateTimeOffset dateTime)
     {
-        SetGregorianDate(zonedDateTime);
+        SetGregorianDate(dateTime);
     }
 
     /// <summary>
@@ -859,10 +859,10 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// <summary>
     /// Sets the date based on a <see cref="DateTimeOffset"/> object. Modifies the Jewish date as well.
     /// </summary>
-    /// <param name="zonedDateTime">the <see cref="DateTimeOffset"/> to set the calendar to</param>
-    public virtual void SetGregorianDate(DateTimeOffset zonedDateTime)
+    /// <param name="dateTime">the <see cref="DateTimeOffset"/> to set the calendar to</param>
+    public virtual void SetGregorianDate(DateTimeOffset dateTime)
     {
-        SetGregorianDate(DateOnly.FromDateTime(zonedDateTime.DateTime));
+        SetGregorianDate(DateOnly.FromDateTime(dateTime.DateTime));
     }
 
     /// <summary>

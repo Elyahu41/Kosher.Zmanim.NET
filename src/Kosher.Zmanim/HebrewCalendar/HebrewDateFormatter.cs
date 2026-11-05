@@ -67,10 +67,9 @@ public class HebrewDateFormatter
 
     /// <summary>
     /// List of transliterated parshiyos using the default <em>Ashkenazi</em> pronunciation. For information on the format, see
-    /// <see cref="GetTransliteratedParshiyosList"/>.
+    /// <see cref="TransliteratedParshiyosList"/>.
     /// </summary>
-    /// <seealso cref="GetTransliteratedParshiyosList"/>
-    /// <seealso cref="SetTransliteratedParshiyosList"/>
+    /// <seealso cref="TransliteratedParshiyosList"/>
     /// <seealso cref="HebrewDateFormatter"/>
     private Dictionary<JewishCalendar.Parshah, string> transliteratedParshahMap;
 
@@ -958,9 +957,9 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns the map of transliterated parshiyos used by this formatter. This list using the default <em>Ashkenazi</em>
-    /// pronunciation. This list can be overridden (for <em>Sephardi</em> English transliteration for example) by setting the
-    /// <see cref="SetTransliteratedParshiyosList"/>. The list includes double and special <em>parshiyos</em> in the following
+    /// The map of transliterated parshiyos used by this formatter. This list using the default <em>Ashkenazi</em>
+    /// pronunciation. This list can be overridden (for <em>Sephardi</em> English transliteration for example) by setting this
+    /// property. The list includes double and special <em>parshiyos</em> in the following
     /// order and spelling "<em>Bereshis, Noach, Lech Lecha, Vayera, Chayei Sara, Toldos, Vayetzei, Vayishlach, Vayeshev, Miketz,
     /// Vayigash, Vayechi, Shemos, Vaera, Bo, Beshalach, Yisro, Mishpatim, Terumah, Tetzaveh, Ki Sisa, Vayakhel, Pekudei, Vayikra,
     /// Tzav, Shmini, Tazria, Metzora, Achrei Mos, Kedoshim, Emor, Behar, Bechukosai, Bamidbar, Nasso, Beha'aloscha, Sh'lach,
@@ -968,25 +967,25 @@ public class HebrewDateFormatter
     /// Vayeilech, Ha'Azinu, Vezos Habracha, Vayakhel Pekudei, Tazria Metzora, Achrei Mos Kedoshim, Behar Bechukosai, Chukas Balak,
     /// Matos Masei, Nitzavim Vayeilech, Shekalim, Zachor, Parah, Hachodesh,Shuva, Shira, Hagadol, Chazon, Nachamu</em>".
     /// </summary>
-    /// <returns>the map of transliterated Parshiyos</returns>
-    /// <seealso cref="SetTransliteratedParshiyosList"/>
     /// <seealso cref="FormatParshah(JewishCalendar)"/>
-    /// <seealso cref="FormatParshah(JewishCalendar)"/>
-    public Dictionary<JewishCalendar.Parshah, string> GetTransliteratedParshiyosList()
+    public Dictionary<JewishCalendar.Parshah, string> TransliteratedParshiyosList
     {
-        return transliteratedParshahMap;
+        get => transliteratedParshahMap;
+        set => transliteratedParshahMap = value ?? throw new ArgumentNullException(nameof(value));
     }
 
-    /// <summary>
-    /// Setter method to allow overriding of the default list of parshiyos transliterated into Latin chars. The
-    /// default uses Ashkenazi American English transliteration.
-    /// </summary>
-    /// <param name="transliteratedParshahMap">the transliterated Parshiyos as an EnumMap to set</param>
-    /// <seealso cref="GetTransliteratedParshiyosList"/>
-    public void SetTransliteratedParshiyosList(Dictionary<JewishCalendar.Parshah, string> transliteratedParshahMap)
-    {
-        this.transliteratedParshahMap = transliteratedParshahMap;
-    }
+    /// <summary>The KosherJava getter for <see cref="TransliteratedParshiyosList"/>.</summary>
+    /// <returns>the map of transliterated Parshiyos</returns>
+    [Obsolete("Use the TransliteratedParshiyosList property; GetTransliteratedParshiyosList() is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public Dictionary<JewishCalendar.Parshah, string> GetTransliteratedParshiyosList() => TransliteratedParshiyosList;
+
+    /// <summary>The KosherJava setter for <see cref="TransliteratedParshiyosList"/>.</summary>
+    /// <param name="transliteratedParshahMap">the transliterated Parshiyos to set</param>
+    [Obsolete("Use the TransliteratedParshiyosList property; SetTransliteratedParshiyosList is the KosherJava name. This alias will be removed in a future version.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public void SetTransliteratedParshiyosList(Dictionary<JewishCalendar.Parshah, string> transliteratedParshahMap) =>
+        TransliteratedParshiyosList = transliteratedParshahMap;
 
     /// <summary>
     /// Returns a string with the name of the current parshah(iyos). This method gets the current <em>parshah</em> by calling <see cref="JewishCalendar.GetParshah"/> that does not return a <em>parshah</em> for any non-<em>Shabbos</em> or a <em>Shabbos</em> that
