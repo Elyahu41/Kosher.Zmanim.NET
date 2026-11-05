@@ -1347,7 +1347,7 @@ public class ZmanimCalendar : AstronomicalCalendar
     /// <param name="degrees">the number of degrees below the horizon after sunset.</param>
     /// <param name="sunset">if <c>true</c> the calculation is in degrees after sunset, otherwise it is degrees before sunrise.</param>
     /// <returns>the <c>double</c> percentage of a <em>sha'ah zmanis</em> for a given set of degrees below the astronomical horizon
-    ///         for the current calendar.  If the calculation can't be computed a <see cref="double.MinValue"/> will be returned. See detailed
+    ///         for the current calendar.  If the calculation can't be computed <see cref="double.Epsilon"/> (the smallest positive <see cref="double"/>, Java's <c>Double.MIN_VALUE</c>) will be returned. See detailed
     ///         explanation on top of the page.</returns>
     public virtual double GetPercentOfShaahZmanisFromDegrees(double degrees, bool sunset)
     {
