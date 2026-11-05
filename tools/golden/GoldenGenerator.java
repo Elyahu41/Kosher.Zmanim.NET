@@ -94,10 +94,10 @@ public class GoldenGenerator {
 		String[] calcs = {"NOAA", "SPA", "Meeus", "SunTimes"};
 		int count = 0;
 		try (Writer w = new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outDir + "/zmanim.tsv.gz")), "UTF-8")) {
-			StringBuilder header = new StringBuilder("#Z\tlocation\tdate\tcalculator\tconfig\tmidnightOffsetSeconds");
+			StringBuilder header = new StringBuilder("#Z\tlocation\tdate\tcalculator\tconfig\tmidnightOffsetSeconds\tnextMidnightOffsetSeconds");
 			for (Method m : all) header.append('\t').append(m.getName());
 			w.write(header + "\n");
-			StringBuilder basicHeader = new StringBuilder("#B\tlocation\tdate\tcalculator\tconfig\tmidnightOffsetSeconds");
+			StringBuilder basicHeader = new StringBuilder("#B\tlocation\tdate\tcalculator\tconfig\tmidnightOffsetSeconds\tnextMidnightOffsetSeconds");
 			for (Method m : all) if (basic.contains(m.getName())) basicHeader.append('\t').append(m.getName());
 			w.write(basicHeader + "\n");
 			for (String[] loc : LOCATIONS) {
@@ -120,6 +120,7 @@ public class GoldenGenerator {
 							StringBuilder row = new StringBuilder(full ? "Z" : "B");
 							row.append('\t').append(loc[0]).append('\t').append(date).append('\t').append(calcName).append('\t').append(cfg);
 							row.append('\t').append(date.atStartOfDay(geo.getZoneId()).getOffset().getTotalSeconds());
+							row.append('\t').append(date.plusDays(1).atStartOfDay(geo.getZoneId()).getOffset().getTotalSeconds());
 							for (Method m : all) {
 								if (!full && !basic.contains(m.getName())) continue;
 								Object value;

@@ -7,6 +7,7 @@
  */
 using System.Globalization;
 using System.Text;
+using Kosher.Zmanim.Internal;
 using Kosher.Zmanim.Util;
 using Xunit;
 
@@ -101,18 +102,23 @@ public class GoldenZmanimTests
             // Linux and macOS, Windows' own time zone data on Windows). They can disagree on historical rules (on Linux only before
             // 1970), and .NET can't represent the seconds in local mean time offsets such as Jerusalem's +2:20:40 in 1900. A
             // different UTC offset legitimately changes the results, so skip those location/dates.
+            // Some zmanim (such as chatzos halayla) also depend on the next day, so both midnights must agree. They are taken the
+            // way the library (and java.time's atStartOfDay) does, so a day skipped by the zone, such as Samoa's December 30, 2011,
+            // resolves to the first instant after the gap.
             int javaOffsetSeconds = int.Parse(f[5], CultureInfo.InvariantCulture);
-            TimeSpan dotnetOffset = geo.TimeZone.GetUtcOffset(date.ToDateTime(TimeOnly.MinValue));
-            if ((int)dotnetOffset.TotalSeconds != javaOffsetSeconds)
+            int javaNextOffsetSeconds = int.Parse(f[6], CultureInfo.InvariantCulture);
+            TimeSpan dotnetOffset = JavaTime.AtZone(date, TimeOnly.MinValue, geo.TimeZone).Offset;
+            TimeSpan dotnetNextOffset = JavaTime.AtZone(date.AddDays(1), TimeOnly.MinValue, geo.TimeZone).Offset;
+            if ((int)dotnetOffset.TotalSeconds != javaOffsetSeconds || (int)dotnetNextOffset.TotalSeconds != javaNextOffsetSeconds)
             {
                 if (OperatingSystem.IsLinux())
                 {
-                    Assert.True(date.Year < 1970, $"{f[1]} {f[2]}: time zone offset {dotnetOffset} differs from Java's {javaOffsetSeconds} s");
+                    Assert.True(date.Year < 1970, $"{f[1]} {f[2]}: time zone offsets {dotnetOffset} / {dotnetNextOffset} differ from Java's {javaOffsetSeconds} / {javaNextOffsetSeconds} s");
                 }
                 skippedRows++;
                 continue;
             }
-            for (int i = 6; i < f.Length; i++)
+            for (int i = 7; i < f.Length; i++)
             {
                 string method = header[i];
                 if (!getters.TryGetValue(method, out var getter))
