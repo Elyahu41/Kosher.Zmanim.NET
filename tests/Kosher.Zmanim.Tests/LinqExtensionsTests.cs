@@ -64,10 +64,10 @@ public class LinqExtensionsTests
         var czc = new ComprehensiveZmanimCalendar(TestLocations.Lakewood()) { LocalDate = new DateOnly(2017, 10, 17) };
         List<Zman> zmanim = czc.GetZmanim().ToList();
 
-        Zman sunrise = Assert.Single(zmanim.Where(z => z.Label == "Sunrise"));
+        Zman sunrise = Assert.Single(zmanim, z => z.Label == "Sunrise");
         Assert.Equal(czc.GetSunrise(), sunrise.Time);
         Assert.Same(czc.GeoLocation, sunrise.GeoLocation);
-        Zman shaah = Assert.Single(zmanim.Where(z => z.Label == "ShaahZmanisGRA"));
+        Zman shaah = Assert.Single(zmanim, z => z.Label == "ShaahZmanisGRA");
         Assert.Equal(czc.GetShaahZmanisGRA(), shaah.Duration);
         // the zmanim KosherJava deprecates as lechumra-only are skipped
         Assert.DoesNotContain(zmanim, z => z.Label == "PlagHamincha120Minutes");
