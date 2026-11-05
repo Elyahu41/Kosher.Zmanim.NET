@@ -15,7 +15,7 @@
   <PropertyGroup Label="NuGet">
     <PackageId>Kosher.Zmanim</PackageId>
     <!-- The version tracks the KosherJava release this port matches -->
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <Title>Kosher Zmanim .NET</Title>
     <Authors>Elyahu41</Authors>
     <Company>Elyahu41</Company>

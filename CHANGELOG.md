@@ -4,7 +4,7 @@ The version numbers of Kosher.Zmanim.NET follow the [KosherJava](https://github.
 port of. See the [KosherJava CHANGELOG](https://github.com/KosherJava/zmanim/blob/master/CHANGELOG.md) for the changes in the
 calculations themselves.
 
-## Unreleased
+## 3.1.1 (2026-11-05)
 * Renamed members whose names referred to Java types or used Java casing, keeping the old names as `[Obsolete]` aliases so
   existing code still compiles:
   * `JewishCalendar.GetMoladAsInstant()` → `GetMoladAsDateTimeOffset()`, `GetTekufaAsInstant(bool)` → `GetTekufaAsDateTimeOffset(bool)`
