@@ -2934,7 +2934,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <em>chatzos</em> can fall before sunrise or after sunset; in those cases a <c>null</c> is returned. Days without a sunrise
     /// or sunset (polar day or night) are not affected.
     /// </summary>
-    /// <returns>the Instant representing the local <em>chatzos</em>, or <c>null</c> if it is before sunrise or after sunset.</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the local <em>chatzos</em>, or <c>null</c> if it is before sunrise or after sunset.</returns>
     /// <seealso cref="GeoLocation.GetLocalMeanTimeOffset"/>
     /// <seealso cref="AstronomicalCalendar.GetLocalMeanTime"/>
     public virtual DateTimeOffset? GetFixedLocalChatzosHayom()
@@ -2968,7 +2968,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <param name="tzais">the end of the Jewish day. If Kidush Levana occurs during the day (starting at <em>alos</em> and ending at
     ///         <em>tzais</em>), the time returned will be <em>alos</em>. If either the <em>alos</em> or <em>tzais</em> parameter
     ///         are <c>null</c>, no daytime adjustment will be made.</param>
-    /// <returns>the Instant representing the moment halfway between molad and molad. If the time occurs between
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment halfway between molad and molad. If the time occurs between
     ///         <em>alos</em> and <em>tzais</em>, <em>alos</em> will be returned. If the <em>zman</em> will not occur on this day, a
     ///         <c>null</c> will be returned.</returns>
     /// <seealso cref="GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -2990,7 +2990,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     }
 
     /// <summary>
-    /// Returns the Instant of the <em>molad</em> based time if it occurs on the current date. Since <em>Kiddush Levana</em>
+    /// Returns the <see cref="DateTimeOffset"/> of the <em>molad</em> based time if it occurs on the current date. Since <em>Kiddush Levana</em>
     /// can only be said during the day, there are parameters to limit it to between <em>alos</em> and <em>tzais</em>. If
     /// the time occurs between <em>alos</em> and <em>tzais</em>, <em>tzais</em> will be returned.
     /// </summary>
@@ -3045,7 +3045,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// The <em>sof zman Kiddush Levana</em> will be returned even if it occurs during the day. To limit the time to between
     /// <em>tzais</em> and <em>alos</em>, see <see cref="GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>.
     /// </summary>
-    /// <returns>the Instant representing the moment halfway between molad and molad. If the <em>zman</em> will not occur on this
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment halfway between molad and molad. If the <em>zman</em> will not occur on this
     ///         day, a <c>null</c> will be returned.</returns>
     /// <seealso cref="GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -3073,7 +3073,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <param name="tzais">the end of the Jewish day. If <em>Kidush Levana</em> occurs during the day (starting at <em>alos</em> and ending
     ///         at <em>tzais</em>), the time returned will be <em>alos</em>. If either the <em>alos</em> or <em>tzais</em> parameters
     ///         are <c>null</c>, no daytime adjustment will be made.</param>
-    /// <returns>the Instant representing the moment 15 days after the molad. If the time occurs between <em>alos</em> and
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 15 days after the molad. If the time occurs between <em>alos</em> and
     ///         <em>tzais</em>, <em>alos</em> will be returned. If the <em>zman</em> will not occur on this day, a
     ///         <c>null</c> will be returned.</returns>
     /// <seealso cref="GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -3104,7 +3104,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// Zmanim</a>. The <em>sof zman Kiddush Levana</em> will be returned even if it occurs during the day. To limit the time to
     /// between <em>tzais</em> and <em>alos</em>, see <see cref="GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>.
     /// </summary>
-    /// <returns>the Instant representing the moment 15 days after the <em>molad</em>. If the <em>zman</em> will not occur on this day,
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 15 days after the <em>molad</em>. If the <em>zman</em> will not occur on this day,
     ///         a <c>null</c> will be returned.</returns>
     /// <seealso cref="GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -3120,7 +3120,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <em>molad</em>. The time will be returned even if it occurs during the day when <em>Kiddush Levana</em> can't be said.
     /// Use <see cref="GetTchilasZmanKidushLevana3Days()"/> if you want to limit the time to night hours.
     /// </summary>
-    /// <returns>the Instant representing the moment 3 days after the molad. If the <em>zman</em> will not occur on this day, a
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 3 days after the molad. If the <em>zman</em> will not occur on this day, a
     ///         <c>null</c> will be returned.</returns>
     /// <seealso cref="GetTchilasZmanKidushLevana3Days()"/>
     /// <seealso cref="GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -3143,7 +3143,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <param name="tzais">the end of the Jewish day. If <em>Kidush Levana</em> occurs during the day (starting at <em>alos</em> and ending
     ///         at <em>tzais</em>), the time returned will be <em>tzais</em>. If either the <em>alos</em> or <em>tzais</em> parameters
     ///         are <c>null</c>, no daytime adjustment will be made.</param>
-    /// <returns>the Instant representing the moment 3 days after the molad. If the time occurs between <em>alos</em> and
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 3 days after the molad. If the time occurs between <em>alos</em> and
     ///         <em>tzais</em>, <em>tzais</em> will be returned. If the <em>zman</em> will not occur on this day, a <c>null</c>
     ///         will be returned.</returns>
     /// <seealso cref="GetTchilasZmanKidushLevana3Days()"/>
@@ -3181,7 +3181,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// minute and chalakim, <see cref="JewishCalendar.GetMoladAsInstant"/> and the not yet completed
     /// <see cref="HebrewDateFormatter"/> that will have formatting for this.
     /// </summary>
-    /// <returns>the Instant representing the moment of the molad. If the <em>molad</em> does not occur on this day, a
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment of the molad. If the <em>molad</em> does not occur on this day, a
     ///         <c>null</c> will be returned.</returns>
     /// <seealso cref="GetTchilasZmanKidushLevana3Days()"/>
     /// <seealso cref="GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -3220,7 +3220,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <param name="tzais">the end of the Jewish day. If <em>Kidush Levana</em> occurs during the day (starting at <em>alos</em> and ending
     ///         at <em>tzais</em>), the time returned will be <em>tzais</em>. If either the <em>alos</em> or <em>tzais</em> parameters
     ///         are <c>null</c>, no daytime adjustment will be made.</param>
-    /// <returns>the Instant representing the moment 7 days after the molad. If the time occurs between <em>alos</em> and
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 7 days after the molad. If the time occurs between <em>alos</em> and
     ///         <em>tzais</em>, <em>tzais</em> will be returned. If the <em>zman</em> will not occur on this day, a
     ///         <c>null</c> will be returned.</returns>
     /// <seealso cref="GetTchilasZmanKidushLevana3Days()"/>
@@ -3248,7 +3248,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// days after the <em>molad</em>. The time will be returned even if it occurs during the day when <em>Kiddush Levana</em>
     /// can't be recited. Use <see cref="GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/> if you want to limit the time to night hours.
     /// </summary>
-    /// <returns>the Instant representing the moment 7 days after the molad regardless of it is day or night. If the <em>zman</em>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 7 days after the molad regardless of it is day or night. If the <em>zman</em>
     ///         will not occur on this day, a <c>null</c> will be returned.</returns>
     /// <seealso cref="GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="JewishCalendar.GetTchilasZmanKidushLevana7Days"/>
@@ -3989,10 +3989,10 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// the time for Krias Shema, the מועדים וזמנים states that <span>ורק אני מסתפק בענין ק״ש שתלוי בעצם בשכיבה וקימה ולא ביום ולילה, אולי יש דין ק״ש יום
     /// ולילה גם במקומות אלו...</span>.</para>
     /// <para>FIXME:
-    /// <ul>
-    ///   <li>Research if an earlier alos such as 18° should be used.</li>
-    ///   <li>Consider logic for day with EITHER an <em>alos</em> or a sunset (the day of transit into 24-hour day/night.</li>
-    /// </ul></para>
+    /// <list type="bullet">
+    ///   <item><description>Research if an earlier alos such as 18° should be used.</description></item>
+    ///   <item><description>Consider logic for day with EITHER an <em>alos</em> or a sunset (the day of transit into 24-hour day/night.</description></item>
+    /// </list></para>
     /// </summary>
     /// <returns>the time of the Jewish calendar transition to the next day in Polar regions according to Rav Moshe Sternbuch.</returns>
     /// <seealso cref="GetPolarPlagHaminchaTeshuvosVehanhagos"/>

@@ -16,7 +16,7 @@ namespace Kosher.Zmanim.Util;
 
 /// <summary>
 /// Implementation of sunrise and sunset methods to calculate astronomical times based on the <a
-/// href="https://noaa.gov">NOAA</a> algorithm. This calculator uses the Java algorithm based on the implementation by <a
+/// href="https://noaa.gov">NOAA</a> algorithm. This calculator uses the algorithm based on the implementation by <a
 /// href="https://noaa.gov">NOAA - National Oceanic and Atmospheric Administration</a>'s <a href =
 /// "https://www.srrb.noaa.gov/highlights/sunrise/sunrise.html">Surface Radiation Research Branch</a>. NOAA's <a
 /// href="https://www.srrb.noaa.gov/highlights/sunrise/solareqns.PDF">implementation</a> is based on equations from <a
@@ -134,9 +134,9 @@ public class NOAACalculator : AstronomicalCalculator
     }
 
     /// <summary>
-    /// Return the <a href="https://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a Java <see cref="DateOnly"/>.
+    /// Return the <a href="https://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a <see cref="DateOnly"/>.
     /// </summary>
-    /// <param name="localDate">The LocalDate</param>
+    /// <param name="localDate">The date</param>
     /// <returns>the Julian day corresponding to the date Note: Number is returned for the start of the Julian day. Fractional days
     ///         / time should be added later.</returns>
     private static double GetJulianDay(DateOnly localDate)

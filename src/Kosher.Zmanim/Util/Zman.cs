@@ -142,7 +142,7 @@ public class Zman
 
     /// <summary>
     /// An <see cref="IComparer{T}"/> that will sort <em>zmanim</em> by label order (ordinal comparison, like Java's natural
-    /// <c>String</c> ordering). <c>null</c> <see cref="Zman"/> objects and <c>null</c> labels sort first.
+    /// <c>string</c> ordinal ordering). <c>null</c> <see cref="Zman"/> objects and <c>null</c> labels sort first.
     /// </summary>
     public static IComparer<Zman?> NameOrder { get; } = Comparer<Zman?>.Create((z1, z2) =>
     {

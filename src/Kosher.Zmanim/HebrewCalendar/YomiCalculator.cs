@@ -53,7 +53,7 @@ public class YomiCalculator
     /// Returns the <a href="http://en.wikipedia.org/wiki/Daf_yomi">Daf Yomi</a> <a
     /// href="http://en.wikipedia.org/wiki/Talmud">Bavli</a> <see cref="Daf"/> for a given date. The first Daf Yomi cycle
     /// started on Rosh Hashana 5684 (September 11, 1923) and calculations prior to this date will result in an
-    /// IllegalArgumentException thrown. For historical calculations (supported by this method), it is important to note
+    /// <see cref="ArgumentException"/> being thrown. For historical calculations (supported by this method), it is important to note
     /// that a change in length of the cycle was instituted starting in the eighth Daf Yomi cycle beginning on June 24,
     /// 1975. The Daf Yomi Bavli cycle has a single masechta of the Talmud Yerushalmi - Shekalim as part of the cycle.
     /// Unlike the Bavli where the number of daf per masechta was standardized since the original <a
@@ -65,8 +65,7 @@ public class YomiCalculator
     /// cycle beginning on June 24, 1975, the length of the Yerushalmi Shekalim was changed from 13 to 22 daf to follow
     /// the <a href="https://en.wikipedia.org/wiki/Vilna_Edition_Shas">Vilna Shas</a> that is in common use today.
     /// </summary>
-    /// <param name="jewishCalendar">The JewishCalendar date for calculation. TODO: this can be changed to use a regular GregorianCalendar since
-    ///            there is nothing specific to the JewishCalendar in this class.</param>
+    /// <param name="jewishCalendar">The JewishCalendar date for calculation. Only its Gregorian date is used.</param>
     /// <returns>the <see cref="Daf"/>.</returns>
     /// <exception cref="ArgumentException">if the date is prior to the September 11, 1923, the start date of the first Daf Yomi cycle.</exception>
     public static Daf GetDafYomiBavli(JewishCalendar jewishCalendar)
@@ -141,9 +140,9 @@ public class YomiCalculator
     }
 
     /// <summary>
-    /// Return the <a href="http://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a Java Calendar.
+    /// Return the <a href="http://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a <see cref="DateOnly"/>.
     /// </summary>
-    /// <param name="localDate">The Java <see cref="DateOnly"/> of the date to be calculated</param>
+    /// <param name="localDate">The <see cref="DateOnly"/> of the date to be calculated</param>
     /// <returns>the Julian day number corresponding to the date</returns>
     private static int GetJulianDay(DateOnly localDate)
     {

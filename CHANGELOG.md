@@ -4,6 +4,15 @@ The version numbers of Kosher.Zmanim.NET follow the [KosherJava](https://github.
 port of. See the [KosherJava CHANGELOG](https://github.com/KosherJava/zmanim/blob/master/CHANGELOG.md) for the changes in the
 calculations themselves.
 
+## Unreleased
+* Documentation: replaced the remaining Java terms in the XML documentation (`Instant`, `ZonedDateTime`, `LocalDate`, `Calendar`,
+  `IllegalArgumentException`, `String`, Java getter names) with their .NET equivalents, filled in empty `<returns>` tags, documented
+  `Clone()`, and converted HTML lists to XML documentation `<list>` elements so they render in IntelliSense.
+* `SunTimesCalculator`: the `NotSupportedException` messages no longer contain the Java `{@link}` markup.
+* `JewishDate` / `JewishCalendar`: removed `[MethodImpl(MethodImplOptions.Synchronized)]` (a lock on `this` carried over from
+  Java's `synchronized`). These classes are mutable and, as in KosherJava, are not meant to be shared between threads without
+  external locking; the results are unchanged.
+
 ## 3.1.0 (2026-11-05)
 Initial release: a complete port of KosherJava 3.1.0 (released 2026-11-02).
 * All classes: `AstronomicalCalendar`, `ZmanimCalendar`, `ComprehensiveZmanimCalendar`, `GeoLocation`, the NOAA, SPA, Meeus and

@@ -358,7 +358,7 @@ public abstract class AstronomicalCalculator
     /// A method that calculates UTC sunset as well as any time based on an angle above or below sunset. This abstract
     /// method is implemented by the classes that extend this class.
     /// </summary>
-    /// <param name="localDate">The <see cref="DateOnly"/>> representing the date to calculate sunset for.</param>
+    /// <param name="localDate">The <see cref="DateOnly"/> representing the date to calculate sunset for.</param>
     /// <param name="geoLocation">The location information used for astronomical calculation of solar times.</param>
     /// <param name="zenith">the azimuth below the vertical zenith of 90°. For sunset typically the zenith used for the calculation uses
     ///         geometric zenith of 90° and <see cref="AdjustZenith">adjusts</see> this slightly to account for solar refraction and the sun's
@@ -582,10 +582,10 @@ public abstract class AstronomicalCalculator
 
     /// <summary>
     /// Two <c>AstronomicalCalculator</c> instances are considered equal if their
-    /// Earth radius, refraction, and solar radius values are identical.
+    /// Earth radius, refraction, solar radius and <see cref="UseApparentSolarRadius"/> values are identical.
     /// </summary>
     /// <param name="obj">the reference object with which to compare</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> if <paramref name="obj"/> is equal to this instance; otherwise <c>false</c>.</returns>
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
@@ -605,16 +605,19 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// This implementation hashes the earth radius, refraction, and solar radius properties to maintain the contract with
+    /// This implementation hashes the earth radius, refraction, solar radius and apparent solar radius properties to maintain the contract with
     /// <see cref="Equals"/>.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>a hash code for this instance.</returns>
     public override int GetHashCode()
     {
         return HashCode.Combine(EarthRadius, Refraction, SolarRadius, useApparentSolarRadius);
     }
 
-    /// <returns></returns>
+    /// <summary>
+    /// Creates a copy of this calculator with the same settings. The copy starts with an empty result cache.
+    /// </summary>
+    /// <returns>a copy of this calculator.</returns>
     public virtual AstronomicalCalculator Clone()
     {
         AstronomicalCalculator clone = (AstronomicalCalculator)MemberwiseClone();
@@ -623,7 +626,7 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// A helper method to retun the <a href="https://en.wikipedia.org/wiki/Law_of_tangents">tan / tangent</a> in degrees.
+    /// A helper method to return the <a href="https://en.wikipedia.org/wiki/Law_of_tangents">tan / tangent</a> in degrees.
     /// </summary>
     /// <param name="angle">the angle</param>
     /// <returns>the tangent in degrees</returns>
@@ -633,7 +636,7 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// A helper method to retun the <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">sine</a> in degrees.
+    /// A helper method to return the <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">sine</a> in degrees.
     /// </summary>
     /// <param name="angle">the angle</param>
     /// <returns>the sine in degrees.</returns>
@@ -643,7 +646,7 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// A helper method to retun the <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">cosine</a> in degrees.
+    /// A helper method to return the <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">cosine</a> in degrees.
     /// </summary>
     /// <param name="angle">the angle</param>
     /// <returns>the cosine in degrees.</returns>
@@ -653,7 +656,7 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// A helper method to retun the <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">arc cosine</a> in degrees.
+    /// A helper method to return the <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">arc cosine</a> in degrees.
     /// </summary>
     /// <param name="angle">the angle</param>
     /// <returns>the arc cosine in degrees.</returns>
@@ -663,7 +666,7 @@ public abstract class AstronomicalCalculator
     }
 
     /// <summary>
-    /// A helper method to retun the <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">arc sine</a> in degrees.
+    /// A helper method to return the <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions">arc sine</a> in degrees.
     /// </summary>
     /// <param name="angle">the angle</param>
     /// <returns>the arc sine in degrees.</returns>
@@ -740,7 +743,7 @@ public abstract class AstronomicalCalculator
     /// "https://en.wikipedia.org/wiki/Apsis#Perihelion_and_aphelion">perihelion</a> (~Jan 3, when the Sun is largest)
     /// and the <a href="https://en.wikipedia.org/wiki/Apsis#Perihelion_and_aphelion">aphelion</a> (~Jul 5, when it is
     /// smallest). The value is read from a precomputed table (<see cref="SolarRadiusByDayOfYear"/>) keyed by calendar
-    /// day; the date's month and day are mapped onto the (common-year) reference year 2050 via <c>withYear(2050)</c>,
+    /// day; the date's month and day are mapped onto the (common-year) reference year 2050,
     /// so a February 29 input is automatically resolved to February 28 and assigned that day's value.
     /// <para>This is the value the calculator applies <b>automatically</b> for sunrise and sunset while
     /// <see cref="UseApparentSolarRadius"/> is <c>true</c> (the default). It is recomputed from the date on

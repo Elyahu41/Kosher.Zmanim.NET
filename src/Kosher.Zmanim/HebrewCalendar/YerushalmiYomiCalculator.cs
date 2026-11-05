@@ -165,9 +165,9 @@ public class YerushalmiYomiCalculator
     /// Checks if a date is on or after start and on or before end. A cycle can start on, or be extended to start
     /// on, Yom Kippur or Tisha B'Av, so the start day is counted.
     /// </summary>
-    /// <param name="start">the start <c>ZonedDateTime</c></param>
-    /// <param name="date">the <c>ZonedDateTime</c> to check</param>
-    /// <param name="end">the end <c>ZonedDateTime</c></param>
+    /// <param name="start">the start date</param>
+    /// <param name="date">the date to check</param>
+    /// <param name="end">the end date</param>
     /// <returns>if the date is between the two dates</returns>
     private static bool IsBetween(DateOnly start, DateOnly date, DateOnly end)
     {
@@ -175,10 +175,10 @@ public class YerushalmiYomiCalculator
     }
 
     /// <summary>
-    /// Returns the number of full days between two <c>ZonedDateTime</c>s.
+    /// Returns the number of full days between two dates.
     /// </summary>
-    /// <param name="start">the start <c>ZonedDateTime</c></param>
-    /// <param name="end">the end <c>ZonedDateTime</c></param>
+    /// <param name="start">the start date</param>
+    /// <param name="end">the end date</param>
     /// <returns>the number of days between the dates.</returns>
     private static long GetDiffBetweenDays(DateOnly start, DateOnly end)
     {

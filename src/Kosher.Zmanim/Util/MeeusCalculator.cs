@@ -882,7 +882,7 @@ public class MeeusCalculator : AstronomicalCalculator
     /// Two <c>MeeusCalculator</c> instances are considered equal if their <see cref="ApplyDeltaT"/> value is identical.
     /// </summary>
     /// <param name="obj">the reference object with which to compare</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> if <paramref name="obj"/> is equal to this instance; otherwise <c>false</c>.</returns>
     public override bool Equals(object? obj)
     {
         if (!base.Equals(obj))
@@ -895,7 +895,7 @@ public class MeeusCalculator : AstronomicalCalculator
     /// <summary>
     /// This implementation hashes the <c>applyDeltaT</c> property to maintain the contract with <see cref="Equals"/>.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>a hash code for this instance.</returns>
     public override int GetHashCode()
     {
         return HashCode.Combine(base.GetHashCode(), applyDeltaT);

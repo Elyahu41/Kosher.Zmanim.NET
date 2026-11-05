@@ -15,7 +15,6 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA,
  * or connect to: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  */
-using System.Runtime.CompilerServices;
 
 namespace Kosher.Zmanim.HebrewCalendar;
 
@@ -23,7 +22,7 @@ namespace Kosher.Zmanim.HebrewCalendar;
 /// <summary>
 /// The JewishCalendar extends the JewishDate class and adds calendar methods.
 ///
-/// This open source Java code was originally ported by <a href="https://www.linkedin.com/in/avromf/">Avrom Finkelstein</a>
+/// This open source code (originally Java) was originally ported by <a href="https://www.linkedin.com/in/avromf/">Avrom Finkelstein</a>
 /// from his C++ code. It was refactored to fit the KosherJava Zmanim API with simplification of the code, enhancements
 /// and some bug fixing. The class allows setting whether the holiday and <em>parshah</em> scheme follows the Israel scheme
 /// or outside Israel scheme. The default is the outside Israel scheme.
@@ -31,9 +30,9 @@ namespace Kosher.Zmanim.HebrewCalendar;
 /// </summary>
 /// <remarks>
 /// <b>To do:</b> Some do not belong in this class, but here is a partial list of what should still be implemented in some form:
-/// <ol>
-/// <li>Mishna yomis etc</li>
-/// </ol>
+/// <list type="number">
+/// <item><description>Mishna yomis etc</description></item>
+/// </list>
 /// </remarks>
 public class JewishCalendar : JewishDate
 {
@@ -570,17 +569,17 @@ public class JewishCalendar : JewishDate
     }
 
     /// <summary>
-    /// A constructor that initializes the date to the <c>Calendar</c> parameter.
+    /// A constructor that initializes the date to the <see cref="DateTimeOffset"/> parameter.
     /// </summary>
-    /// <param name="zonedDateTime">the <c>ZonedDateTime</c> to set the calendar to</param>
+    /// <param name="zonedDateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
     public JewishCalendar(DateTimeOffset zonedDateTime) : base(zonedDateTime)
     {
     }
 
     /// <summary>
-    /// A constructor that initializes the date to the <see cref="DateOnly">LocalDate</see> parameter.
+    /// A constructor that initializes the date to the <see cref="DateOnly"/> parameter.
     /// </summary>
-    /// <param name="localDate">the <c>LocalDate</c> to set the calendar to</param>
+    /// <param name="localDate">the <see cref="DateOnly"/> to set the calendar to</param>
     public JewishCalendar(DateOnly localDate) : base(localDate)
     {
     }
@@ -795,7 +794,6 @@ public class JewishCalendar : JewishDate
     /// is a weekday or if there is no <em>parshah</em> that week (for example <em>Yom Tov</em> that falls on a <em>Shabbos</em>).
     /// </summary>
     /// <returns>the current <em>parshah</em>.</returns>
-    [MethodImpl(MethodImplOptions.Synchronized)]
     public virtual Parshah GetParshah()
     {
         if (DayOfWeek != Weekday.Saturday)
@@ -850,7 +848,6 @@ public class JewishCalendar : JewishDate
     ///         of <see cref="Parshah.Hagadol"><em>Hagadol</em></see>, <see cref="Parshah.Chazon"><em>Chazon</em></see>, <see cref="Parshah.Nachamu"><em>Nachamu</em></see>,
     ///         <see cref="Parshah.Shuva"><em>Shuva</em></see>, <see cref="Parshah.Shira"><em>Shira</em></see>, or <see cref="Parshah.None">Parshah.NONE</see> for a regular
     ///         <em>Shabbos</em> (or any weekday).</returns>
-    [MethodImpl(MethodImplOptions.Synchronized)]
     public virtual Parshah GetSpecialShabbos()
     {
         if (DayOfWeek == Weekday.Saturday)
@@ -929,7 +926,6 @@ public class JewishCalendar : JewishDate
     /// <b>To do:</b> Consider using enums instead of the constant ints.
     /// </remarks>
     /// <seealso cref="HebrewDateFormatter.FormatYomTov"/>
-    [MethodImpl(MethodImplOptions.Synchronized)]
     public virtual int GetYomTovIndex()
     {
         int day = JewishDayOfMonth;
@@ -1630,13 +1626,13 @@ public class JewishCalendar : JewishDate
     }
 
     /// <summary>
-    /// Returns the <em>molad</em> in Standard Time in Yerushalayim as a Date. The traditional calculation uses local time.
+    /// Returns the <em>molad</em> in Standard Time in Yerushalayim as a <see cref="DateTimeOffset"/>. The traditional calculation uses local time.
     /// This method subtracts 20.94 minutes (20 minutes and 56.496 seconds) from the local time (of <em>Har Habayis</em>
     /// with a longitude of 35.2354° is 5.2354° away from the %15 timezone longitude) to get to standard time. This
-    /// method intentionally uses standard time and not daylight savings time. Java will implicitly format the time to the
-    /// default (or set) Timezone.
+    /// method intentionally uses standard time and not daylight savings time. The returned value has a UTC offset of zero; use
+    /// <see cref="TimeZoneInfo.ConvertTime(DateTimeOffset, TimeZoneInfo)"/> to display it in another time zone.
     /// </summary>
-    /// <returns>the Date representing the moment of the <em>molad</em> in Yerushalayim standard time (GMT + 2)</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment of the <em>molad</em> in Yerushalayim standard time (GMT + 2), expressed in UTC</returns>
     public virtual DateTimeOffset? GetMoladAsInstant()
     {
         JewishDate molad = GetMolad();
@@ -1668,7 +1664,7 @@ public class JewishCalendar : JewishDate
     /// even if it is during the day when <em>Kiddush Levana</em> can't be said. Callers of this method should consider
     /// displaying the next <em>tzais</em> if the <em>zman</em> is between <em>alos</em> and <em>tzais</em>.
     /// </summary>
-    /// <returns>the Date representing the moment 3 days after the molad.</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 3 days after the molad.</returns>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana3Days()"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana3Days()"/>
     public virtual DateTimeOffset? GetTchilasZmanKidushLevana3Days()
@@ -1683,7 +1679,7 @@ public class JewishCalendar : JewishDate
     /// even if it is during the day when <em>Kiddush Levana</em> can't be said. Callers of this method should consider
     /// displaying the next <em>tzais</em> if the <em>zman</em> is between <em>alos</em> and <em>tzais</em>.
     /// </summary>
-    /// <returns>the Date representing the moment 7 days after the molad.</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 7 days after the molad.</returns>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetTchilasZmanKidushLevana7Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     public virtual DateTimeOffset? GetTchilasZmanKidushLevana7Days()
@@ -1700,7 +1696,7 @@ public class JewishCalendar : JewishDate
     /// recited. Callers of this method should consider displaying <em>alos</em> before this time if the <em>zman</em> is
     /// between <em>alos</em> and <em>tzais</em>.
     /// </summary>
-    /// <returns>the Date representing the moment halfway between <em>molad</em> and <em>molad</em>.</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment halfway between <em>molad</em> and <em>molad</em>.</returns>
     /// <seealso cref="GetSofZmanKidushLevana15Days"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevanaBetweenMoldos(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -1731,7 +1727,7 @@ public class JewishCalendar : JewishDate
     /// the day when <em>Kiddush Levana</em> can't be said. Callers of this method should consider displaying <em>alos</em>
     /// before this time if the <em>zman</em> is between <em>alos</em> and <em>tzais</em>.
     /// </summary>
-    /// <returns>the Date representing the moment 15 days after the <em>molad</em>.</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> representing the moment 15 days after the <em>molad</em>.</returns>
     /// <seealso cref="GetSofZmanKidushLevanaBetweenMoldos"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
     /// <seealso cref="ComprehensiveZmanimCalendar.GetSofZmanKidushLevana15Days(Nullable{DateTimeOffset}, Nullable{DateTimeOffset})"/>
@@ -1844,7 +1840,7 @@ public class JewishCalendar : JewishDate
     /// </summary>
     /// <param name="useLocalMeanTime">if true, removes ~21 minutes from the time of the <em>tekufa</em> calculated by Rabbi Yechiel Michel
     ///         Tucazinsky, and will follow the opinion of Rabbi Yonah Merzbach.</param>
-    /// <returns>an Instant with the time that the <em>tekufa</em> (season) changes or a <c>null</c> on a day with no <em>tekufa</em>
+    /// <returns>a <see cref="DateTimeOffset"/> with the time that the <em>tekufa</em> (season) changes or a <c>null</c> on a day with no <em>tekufa</em>
     ///         change.</returns>
     /// <seealso cref="GetTekufa"/>
     public virtual DateTimeOffset? GetTekufaAsInstant(bool useLocalMeanTime)

@@ -108,7 +108,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// <summary>
     /// Method to return the elevation in Meters <b>above</b> sea level.
     /// </summary>
-    /// <value>The elevation to set in Meters. An IllegalArgumentException will be thrown if the value is a negative,
+    /// <value>The elevation to set in Meters. An <see cref="ArgumentException"/> will be thrown if the value is a negative,
     ///         <see cref="double.IsNaN"/>  or <see cref="double.IsInfinity"/>.</value>
     /// <remarks>
     /// Method to set the elevation in Meters <b>above</b> sea level. Locations with an elevation below sea level should use a sea level
@@ -139,7 +139,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// <summary>
     /// Method to return the elevation in Meters above sea level of the horizon at the point where the sun rises that day.
     /// </summary>
-    /// <value>the horizon elevation at sunrise in Meters. An IllegalArgumentException will be thrown
+    /// <value>the horizon elevation at sunrise in Meters. An <see cref="ArgumentException"/> will be thrown
     ///         if the value is a negative, <see cref="double.IsNaN"/> or <see cref="double.IsInfinity"/>.</value>
     /// <remarks>
     /// Method to set the elevation in Meters above sea level of the horizon at the point where the sun rises that day.
@@ -162,7 +162,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// <summary>
     /// Method to return the elevation in Meters above sea level of the horizon at the point where the sun sets that day.
     /// </summary>
-    /// <value>the horizon elevation at sunset in Meters. An IllegalArgumentException will be thrown
+    /// <value>the horizon elevation at sunset in Meters. An <see cref="ArgumentException"/> will be thrown
     ///         if the value is a negative, <see cref="double.IsNaN"/> or <see cref="double.IsInfinity"/>.</value>
     /// <remarks>
     /// Method to set the elevation in Meters above sea level of the horizon at the point where the sun sets that day.
@@ -297,7 +297,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// </summary>
     /// <value>The degrees of latitude to set. The values should be between -90° and 90°. For example 40.096 would be
     ///         used for Lakewood, NJ. <b>Note:</b> For latitudes south of the equator, a negative value should be used. An
-    ///         IllegalArgumentException will be thrown if the value exceeds the limits.</value>
+    ///         <see cref="ArgumentException"/> will be thrown if the value exceeds the limits.</value>
     /// <remarks>
     /// Method to set the latitude as a <c>double</c>, for example 40.096 for Lakewood, NJ.
     /// </remarks>
@@ -322,7 +322,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// <value>The degrees of longitude to set as a <c>double</c> between -180.0° and 180.0°. For example
     ///         -74.222 would be used for Lakewood, NJ. Note: for longitudes west of the <a href=
     ///         "https://en.wikipedia.org/wiki/Prime_Meridian">Prime Meridian</a> (Greenwich) a negative value should be used. An
-    ///         <c>IllegalArgumentException</c> will be thrown if the value exceeds the limit.</value>
+    ///         <see cref="ArgumentException"/> will be thrown if the value exceeds the limit.</value>
     /// <remarks>
     /// Method to set the longitude as a <c>double</c>, for example -74.222 for Lakewood, NJ
     /// </remarks>
@@ -358,7 +358,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     /// <summary>
     /// Method to return the <see cref="TimeZoneInfo"/>.
     /// </summary>
-    /// <value>The zoneId to set.</value>
+    /// <value>The time zone to set.</value>
     /// <remarks>
     /// The calendars convert every time they return to this zone when it is calculated, so changing the time zone of a
     /// <see cref="GeoLocation"/> already set in an <see cref="AstronomicalCalendar"/> takes effect immediately. Note that
@@ -673,8 +673,8 @@ public class GeoLocation : IEquatable<GeoLocation>
     }
 
     /// <summary>
-    /// An implementation of the <c>Clone</c> method that creates a <a
-    /// href="https://en.wikipedia.org/wiki/Object_copy#Deep_copy">deep copy</a> of the object.
+    /// Creates a copy of this <see cref="GeoLocation"/>. All of its fields are values or immutable objects, so the copy is
+    /// independent of the original.
     /// </summary>
     public GeoLocation Clone()
     {

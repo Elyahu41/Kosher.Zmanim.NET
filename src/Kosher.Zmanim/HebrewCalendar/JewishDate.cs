@@ -14,15 +14,14 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA,
  * or connect to: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  */
-using System.Runtime.CompilerServices;
 
 namespace Kosher.Zmanim.HebrewCalendar;
 
 /// <summary>
 /// The JewishDate is the base calendar class, that supports maintenance of a <see cref="DateOnly"/>
-/// instance along with the corresponding Jewish date. This class can use the standard Java Date and Calendar
-/// classes for setting and maintaining the dates, but it does not subclass these classes or use them internally
-/// in any calculations. This class also does not have a concept of a time (which the Date class does). Please
+/// instance along with the corresponding Jewish date. This class can be set from a <see cref="DateOnly"/> or a
+/// <see cref="DateTimeOffset"/>, but it does not use them internally in any calculations. This class also does not have a
+/// concept of a time (which <see cref="DateTimeOffset"/> does). Please
 /// note that the calendar does not currently support dates prior to 1/1/1 Gregorian. Also keep in mind that the
 /// Gregorian calendar started on October 15, 1582, so any calculations prior to that are suspect (at least from
 /// a Gregorian perspective). While 1/1/1 Gregorian and forward are technically supported, any calculations prior to <a
@@ -30,7 +29,7 @@ namespace Kosher.Zmanim.HebrewCalendar;
 /// CE Julian as recorded by <a href="http://en.wikipedia.org/wiki/Hai_Gaon">Rav Hai Gaon</a>) would be just an
 /// approximation.
 ///
-/// This open source Java code was written by <a href="https://www.linkedin.com/in/avromf/">Avrom Finkelstein</a> from his C++
+/// This open source code (originally Java) was written by <a href="https://www.linkedin.com/in/avromf/">Avrom Finkelstein</a> from his C++
 /// code. It was refactored to fit the KosherJava Zmanim API with simplification of the code, enhancements and some bug
 /// fixing.
 ///
@@ -328,7 +327,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// Computes the absolute date from a Gregorian date. ND+ER
     /// </summary>
     /// <param name="year">the Gregorian year</param>
-    /// <param name="month">the Gregorian month. Unlike the Java Calendar where January has the value of 0,This expects a 1 for January</param>
+    /// <param name="month">the Gregorian month. This expects a 1 for January (as <see cref="DateOnly.Month"/> does)</param>
     /// <param name="dayOfMonth">the day of the month (1st, 2nd, etc...)</param>
     /// <returns>the absolute Gregorian day</returns>
     private static int GregorianDateToAbsDate(int year, int month, int dayOfMonth)
@@ -402,17 +401,17 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
 
     /// <summary>
     /// Adds the 4 dechiyos for <em>molad</em> Tishrei. These are:
-    /// <ol>
-    /// <li><em>Lo ADU Rosh</em> - Rosh Hashana can't fall on a Sunday, Wednesday or Friday. If the <em>molad</em> fell on one
-    /// of these days, Rosh Hashana is delayed to the following day.</li>
-    /// <li><em>Molad Zaken</em> - If the <em>molad</em> of Tishrei falls after 12 noon, Rosh Hashana is delayed to the following
-    /// day. If the following day is <em>ADU</em>, it will be delayed an additional day.</li>
-    /// <li><em>GaTRaD</em> - If on a non leap year the <em>molad</em> of Tishrei falls on a Tuesday (Ga) on or after 9 hours
+    /// <list type="number">
+    /// <item><description><em>Lo ADU Rosh</em> - Rosh Hashana can't fall on a Sunday, Wednesday or Friday. If the <em>molad</em> fell on one
+    /// of these days, Rosh Hashana is delayed to the following day.</description></item>
+    /// <item><description><em>Molad Zaken</em> - If the <em>molad</em> of Tishrei falls after 12 noon, Rosh Hashana is delayed to the following
+    /// day. If the following day is <em>ADU</em>, it will be delayed an additional day.</description></item>
+    /// <item><description><em>GaTRaD</em> - If on a non leap year the <em>molad</em> of Tishrei falls on a Tuesday (Ga) on or after 9 hours
     /// (<em>T</em>) and (<em>RaD</em> 204 <em>chalakim</em> it is delayed till Thursday (one day delay, plus one day for
-    /// <em>Lo ADU Rosh</em>)</li>
-    /// <li><em>BeTuTaKPaT</em> - if the year following a leap year falls on a Monday (<em>Be</em>) on or after 15 hours
-    /// (<em>Tu</em>) and 589 <em>chalakim</em> (<em>TaKPaT</em>) it is delayed till Tuesday</li>
-    /// </ol>
+    /// <em>Lo ADU Rosh</em>)</description></item>
+    /// <item><description><em>BeTuTaKPaT</em> - if the year following a leap year falls on a Monday (<em>Be</em>) on or after 15 hours
+    /// (<em>Tu</em>) and 589 <em>chalakim</em> (<em>TaKPaT</em>) it is delayed till Tuesday</description></item>
+    /// </list>
     /// </summary>
     /// <param name="year">the year</param>
     /// <param name="moladDay">the <em>molad</em> day</param>
@@ -577,7 +576,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     }
 
     /// <summary>
-    /// Returns if Cheshvan is long in a given Jewish year. The method name isLong is done since in a Kesidran (ordered)
+    /// Returns if Cheshvan is long in a given Jewish year. The method name IsCheshvanLong is used since in a Kesidran (ordered)
     /// year Cheshvan is short. ND+ER
     /// </summary>
     /// <param name="year">the year</param>
@@ -591,7 +590,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
 
     /// <summary>
     /// Returns if Cheshvan is long (30 days VS 29 days) for the current year that the calendar is set to. The method
-    /// name isLong is done since in a Kesidran (ordered) year Cheshvan is short.
+    /// name IsCheshvanLong is used since in a Kesidran (ordered) year Cheshvan is short.
     /// </summary>
     /// <returns>true if Cheshvan is long for the current year that the calendar is set to</returns>
     /// <seealso cref="IsCheshvanLong(int)"/>
@@ -601,7 +600,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     }
 
     /// <summary>
-    /// Returns if Kislev is short (29 days VS 30 days) in a given Jewish year. The method name isShort is done since in
+    /// Returns if Kislev is short (29 days VS 30 days) in a given Jewish year. The method name IsKislevShort is used since in
     /// a Kesidran (ordered) year Kislev is long. ND+ER
     /// </summary>
     /// <param name="year">the Jewish year</param>
@@ -614,7 +613,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     }
 
     /// <summary>
-    /// Returns if the Kislev is short for the year that this class is set to. The method name isShort is done since in a
+    /// Returns if the Kislev is short for the year that this class is set to. The method name IsKislevShort is used since in a
     /// Kesidran (ordered) year Kislev is long.
     /// </summary>
     /// <returns>true if Kislev is short for the year that this class is set to</returns>
@@ -682,7 +681,6 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// January 1, 0001, as the <em>molad</em> of Teves 3761 is, on December 12, 0000.
     /// </summary>
     /// <param name="gregorianAbsDate">the Gregorian absolute date.</param>
-    [MethodImpl(MethodImplOptions.Synchronized)]
     private void SetAbsDate(int gregorianAbsDate)
     {
         this.gregorianAbsDate = gregorianAbsDate;
@@ -843,7 +841,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// <summary>
     /// A constructor that initializes the date to the <see cref="DateTimeOffset"/> parameter.
     /// </summary>
-    /// <param name="zonedDateTime">the <c>ZonedDateTime</c> to set the calendar to</param>
+    /// <param name="zonedDateTime">the <see cref="DateTimeOffset"/> whose local date (in its own offset) the calendar is set to</param>
     public JewishDate(DateTimeOffset zonedDateTime)
     {
         SetGregorianDate(zonedDateTime);
@@ -852,7 +850,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// <summary>
     /// A constructor that initializes the date to the <see cref="DateOnly"/> parameter.
     /// </summary>
-    /// <param name="localDate">the <c>LocalDate</c> to set the calendar to</param>
+    /// <param name="localDate">the <see cref="DateOnly"/> to set the calendar to</param>
     public JewishDate(DateOnly localDate)
     {
         SetGregorianDate(localDate);
@@ -870,7 +868,7 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     /// <summary>
     /// Sets the date based on a <see cref="DateOnly"/> object. Modifies the Jewish date as well.
     /// </summary>
-    /// <param name="localDate">the <c>LocalDate</c> to set the calendar to</param>
+    /// <param name="localDate">the <see cref="DateOnly"/> to set the calendar to</param>
     /// <exception cref="ArgumentException">if the date would fall prior to the year 1 AD</exception>
     public virtual void SetGregorianDate(DateOnly localDate)
     {
@@ -916,7 +914,6 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     ///         <em>chalakim</em> &lt; 0 &gt; 17. For larger a larger number of <em>chalakim</em> such as 793 (<em>TaShTzaG</em>)
     ///         break the <em>chalakim</em> into minutes (18 <em>chalakim</em> per minutes, so it would be 44 minutes and 1
     ///         <em>chelek</em> in the case of 793 (<em>TaShTzaG</em>).</exception>
-    [MethodImpl(MethodImplOptions.Synchronized)]
     public virtual void SetJewishDate(int year, int month, int dayOfMonth, int hours, int minutes, int chalakim)
     {
 
@@ -1252,8 +1249,9 @@ public class JewishDate : IComparable<JewishDate>, IEquatable<JewishDate>
     public int DayOfWeek => dayOfWeek;
 
     /// <summary>
-    /// A method that creates a <a href="http://en.wikipedia.org/wiki/Object_copy#Deep_copy">deep copy</a> of the object.
+    /// Creates a copy of this date. All of its fields are values, so the copy is independent of the original.
     /// </summary>
+    /// <returns>a copy of this date, of the same runtime type.</returns>
     public virtual JewishDate Clone()
     {
         return (JewishDate)MemberwiseClone();

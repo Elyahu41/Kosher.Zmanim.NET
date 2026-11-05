@@ -15,13 +15,13 @@
 namespace Kosher.Zmanim.Util;
 
 /// <summary>
-/// Implementation of sunrise and sunset methods to calculate astronomical times. This calculator uses the Java algorithm
+/// Implementation of sunrise and sunset methods to calculate astronomical times. This calculator uses the algorithm
 /// written by <a href="https://web.archive.org/web/20090531215353/http://www.kevinboone.com/suntimes.html">Kevin
 /// Boone</a> that is based on the <a href = "https://aa.usno.navy.mil/">US Naval Observatory's</a><a
 /// href="https://aa.usno.navy.mil/publications/asa">Astronomical Almanac</a> and used with his permission. Added to Kevin's
 /// code is adjustment of the zenith to account for elevation. This algorithm returns the same time every year and does not
 /// account for leap years. It is not as accurate as the Jean Meeus based <see cref="NOAACalculator"/> that is the default calculator
-/// use by the KosherJava <em>zmanim</em> library, and is certainly not as accurate as some newer calculators such as the <see cref="MeeusCalculator"/> ot the <see cref="SPACalculator"/>. It also does not have an implementation of some solar calculation methods as
+/// use by the KosherJava <em>zmanim</em> library, and is certainly not as accurate as some newer calculators such as the <see cref="MeeusCalculator"/> or the <see cref="SPACalculator"/>. It also does not have an implementation of some solar calculation methods as
 /// detailed in the deprecation notes.
 /// </summary>
 /// <remarks>
@@ -236,41 +236,35 @@ public class SunTimesCalculator : AstronomicalCalculator
     }
 
     /// <summary>
-    /// <b>This calculator class does not implement the getSolarAzimuth method, and throws a <see cref="NotSupportedException"/>.
-    /// Use the <see cref="NOAACalculator"/>if this method is required</b>.
-    /// <br/>
+    /// <b>This calculator class does not implement <see cref="AstronomicalCalculator.GetSolarAzimuth"/>, and throws a
+    /// <see cref="NotSupportedException"/>. Use the <see cref="NOAACalculator"/> if this method is required.</b>
     /// </summary>
-    /// <exception cref="NotSupportedException">This calculator class does not implement the getSolarAzimuth method. Use the
-    ///         <see cref="NOAACalculator"/> instead.</exception>
+    /// <exception cref="NotSupportedException">Always. Use the <see cref="NOAACalculator"/> instead.</exception>
     public override double GetSolarAzimuth(DateTimeOffset instant, GeoLocation geoLocation)
     {
         throw new NotSupportedException(
-                "The SunTimesCalculator class does not implement the getSolarAzimuth method. Use the {@link NOAACalculator} instead.");
+                "The SunTimesCalculator class does not implement the GetSolarAzimuth method. Use the NOAACalculator instead.");
     }
 
     /// <summary>
-    /// <b>This calculator class does not implement the getSolarElevation method, and throws a <see cref="NotSupportedException"/>.
-    /// Use the <see cref="NOAACalculator"/>if this method is required</b>.
-    /// <br/>
+    /// <b>This calculator class does not implement <see cref="AstronomicalCalculator.GetSolarElevation"/>, and throws a
+    /// <see cref="NotSupportedException"/>. Use the <see cref="NOAACalculator"/> if this method is required.</b>
     /// </summary>
-    /// <exception cref="NotSupportedException">This calculator class does not implement the getSolarElevation method. Use the
-    ///         <see cref="NOAACalculator"/> instead.</exception>
+    /// <exception cref="NotSupportedException">Always. Use the <see cref="NOAACalculator"/> instead.</exception>
     public override double GetSolarElevation(DateTimeOffset instant, GeoLocation geoLocation)
     {
         throw new NotSupportedException(
-                "The SunTimesCalculator class does not implement the getSolarElevation method. Use the NOAACalculator instead.");
+                "The SunTimesCalculator class does not implement the GetSolarElevation method. Use the NOAACalculator instead.");
     }
 
     /// <summary>
-    /// <b>This calculator class does not implement the getTimeAtAzimuth method, and throws a <see cref="NotSupportedException"/>.
-    /// Use the <see cref="NOAACalculator"/>if this method is required</b>.
-    /// <br/>
+    /// <b>This calculator class does not implement <see cref="AstronomicalCalculator.GetTimeAtAzimuth"/>, and throws a
+    /// <see cref="NotSupportedException"/>. Use the <see cref="NOAACalculator"/> if this method is required.</b>
     /// </summary>
-    /// <exception cref="NotSupportedException">This calculator class does not implement the getTimeAtAzimuth method. Use the
-    ///         <see cref="NOAACalculator"/> instead.</exception>
+    /// <exception cref="NotSupportedException">Always. Use the <see cref="NOAACalculator"/> instead.</exception>
     public override double GetTimeAtAzimuth(DateOnly localDate, GeoLocation geoLocation, double azimuth)
     {
         throw new NotSupportedException(
-                "The SunTimesCalculator class does not implement the getTimeAtAzimuth method. Use the {@link NOAACalculator} instead.");
+                "The SunTimesCalculator class does not implement the GetTimeAtAzimuth method. Use the NOAACalculator instead.");
     }
 }

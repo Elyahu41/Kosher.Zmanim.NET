@@ -28,7 +28,7 @@ namespace Kosher.Zmanim;
 /// <b>Note:</b> There are times when the algorithms can't calculate proper values for sunrise, sunset and twilight. This is usually
 /// caused by trying to calculate times for areas either very far North or South, where sunrise / sunset never happen on that date.
 /// This is common when calculating deep twilight angles at high northern latitudes, such as London. The sun never reaches this dip at
-/// certain times of the year. When the calculations encounter this condition a <c>null</c> will be returned when a <see cref="DateTimeOffset"/> or <see cref="TimeSpan"/> is expected. The reason that <c>Exception</c>s are not thrown in these cases is
+/// certain times of the year. When the calculations encounter this condition a <c>null</c> will be returned when a <see cref="DateTimeOffset"/> or <see cref="TimeSpan"/> is expected. The reason that exceptions are not thrown in these cases is
 /// because the lack of a rise/set or twilight is not an exception, but an expected condition in many parts of the world.
 /// <para>Here is a simple example of how to use the API to calculate sunrise.
 /// First create the AstronomicalCalendar for the location you would like to calculate sunrise or sunset times for:</para>
@@ -100,7 +100,7 @@ public class AstronomicalCalendar
     private AstronomicalCalculator astronomicalCalculator;
 
     /// <summary>
-    /// The getSunrise method returns a <see cref="DateTimeOffset"/> representing the <see cref="AstronomicalCalculator.GetElevationAdjustment">elevation adjusted</see> sunrise time. The zenith used for the calculation uses <see cref="GeometricZenith">geometric zenith</see> of 90° plus <see cref="AstronomicalCalculator.GetElevationAdjustment"/>. This is
+    /// The GetSunrise method returns a <see cref="DateTimeOffset"/> representing the <see cref="AstronomicalCalculator.GetElevationAdjustment">elevation adjusted</see> sunrise time. The zenith used for the calculation uses <see cref="GeometricZenith">geometric zenith</see> of 90° plus <see cref="AstronomicalCalculator.GetElevationAdjustment"/>. This is
     /// adjusted by the <see cref="AstronomicalCalculator"/> to add approximately 50/60 of a degree to account for 34 arcminutes of
     /// refraction and 16 arcminutes for the sun's radius for a total of <see cref="AstronomicalCalculator.AdjustZenith">90.83333°</see>.
     /// See documentation for the specific implementation of the <see cref="AstronomicalCalculator"/> that you are using.
@@ -183,7 +183,7 @@ public class AstronomicalCalendar
     }
 
     /// <summary>
-    /// The getSunset method returns an <see cref="DateTimeOffset"/> representing the
+    /// The GetSunset method returns a <see cref="DateTimeOffset"/> representing the
     /// <see cref="AstronomicalCalculator.GetElevationAdjustment">elevation adjusted</see> sunset time. The zenith used for the
     /// calculation uses <see cref="GeometricZenith">geometric zenith</see> of 90° plus <see cref="AstronomicalCalculator.GetElevationAdjustment"/>. This is adjusted by the <see cref="AstronomicalCalculator"/> to add approximately 50/60 of a
     /// degree to account for 34 arcminutes of refraction and 16 arcminutes for the sun's radius for a total of <see cref="AstronomicalCalculator.AdjustZenith">90.83333°</see>. See documentation for the specific implementation of the
@@ -277,7 +277,8 @@ public class AstronomicalCalendar
     /// </summary>
     /// <param name="time">the start time</param>
     /// <param name="offset">the <see cref="TimeSpan"/> of the offset to add to the time.</param>
-    /// <returns>the <see cref="DateTimeOffset"/> with the offset of the <see cref="TimeSpan"/> added to it</returns>
+    /// <returns>the <see cref="DateTimeOffset"/> with the offset of the <see cref="TimeSpan"/> added to it, or <c>null</c> if either
+    ///         parameter is <c>null</c></returns>
     public static DateTimeOffset? GetTimeOffset(DateTimeOffset? time, TimeSpan? offset)
     {
         if (time == null || offset == null)
@@ -561,7 +562,7 @@ public class AstronomicalCalendar
     /// </summary>
     /// <param name="time">The time to be set as the time for the <see cref="DateTimeOffset"/>. The time expected is in the format: 18.75 for 6:45:00 PM.</param>
     /// <param name="solarEvent">the type of <see cref="SolarEvent"/></param>
-    /// <returns>The Instant object representation of the time double</returns>
+    /// <returns>The <see cref="DateTimeOffset"/> representation of the time double, or <c>null</c> if it is <see cref="double.NaN"/></returns>
     protected virtual DateTimeOffset? GetInstantFromTime(double time, SolarEvent solarEvent)
     {
         if (double.IsNaN(time))
@@ -759,7 +760,7 @@ public class AstronomicalCalendar
 
     /// <summary>
     /// A method that returns <a href="https://en.wikipedia.org/wiki/Local_mean_time">local mean time (LMT)</a> for a <see cref="TimeOnly"/>
-    /// passed to this method. This time is adjusted from standard time to account for the local latitude. The 360° of the globe
+    /// passed to this method. This time is adjusted from standard time to account for the local longitude. The 360° of the globe
     /// divided by 24 calculates to 15° per hour with 4 minutes per degree, so at a longitude of 0 , 15, 30 etc... noon is at exactly
     /// 12:00 PM. Lakewood, NJ, with a longitude of -74.222, is 0.7906 away from the closest multiple of 15 at -75°. This is
     /// multiplied by 4 clock minutes (per degree) to yield 3 minutes and 7 seconds for a noon time of 11:56:53 AM. This method is not
@@ -839,7 +840,7 @@ public class AstronomicalCalendar
     /// and <see cref="AstronomicalCalculator"/> values are identical.
     /// </summary>
     /// <param name="obj">the reference object with which to compare</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> if <paramref name="obj"/> is equal to this instance; otherwise <c>false</c>.</returns>
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
@@ -857,10 +858,10 @@ public class AstronomicalCalendar
     }
 
     /// <summary>
-    /// This implementation hashes the <c>Class</c>, <see cref="LocalDate"/>, <see cref="GeoLocation"/> and
+    /// This implementation hashes the runtime type, <see cref="LocalDate"/>, <see cref="GeoLocation"/> and
     /// <see cref="AstronomicalCalculator"/> properties to maintain the contract with <see cref="Equals"/>.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>a hash code for this instance.</returns>
     public override int GetHashCode()
     {
         return HashCode.Combine(GetType(), LocalDate, GeoLocation, AstronomicalCalculator);
@@ -900,19 +901,20 @@ public class AstronomicalCalendar
 
 
     /// <summary>
-    /// returns the <see cref="DateOnly"/> object encapsulated in this class.
+    /// The date the zmanim are calculated for. Defaults to today in the location's time zone when the calendar is created.
     /// </summary>
     /// <value>The <see cref="DateOnly"/> to set.</value>
-    /// <remarks>
-    /// Sets the <see cref="DateOnly"/>  object for use in this class.
-    /// </remarks>
     public DateOnly LocalDate
     {
         get => localDate;
         set => localDate = value;
     }
 
-    /// <returns></returns>
+    /// <summary>
+    /// Creates a copy of this calendar. The <see cref="GeoLocation"/> and <see cref="AstronomicalCalculator"/> are copied too, so
+    /// changing the copy (for example its <see cref="LocalDate"/> or location) does not affect this instance.
+    /// </summary>
+    /// <returns>a copy of this calendar, of the same runtime type.</returns>
     public virtual AstronomicalCalendar Clone()
     {
         AstronomicalCalendar clone = (AstronomicalCalendar)MemberwiseClone();

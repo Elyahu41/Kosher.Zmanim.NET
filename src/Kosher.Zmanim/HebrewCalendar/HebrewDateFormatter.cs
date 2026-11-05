@@ -22,13 +22,13 @@ namespace Kosher.Zmanim.HebrewCalendar;
 /// (<em>Bavli</em> and <em>Yerushalmi</em>), the <em>Omer</em>, <em>Parshas Hashavua</em> (including the special <em>parshiyos</em>
 /// of <em>Shekalim</em>, <em>Zachor</em>, <em>Parah</em> and <em>Hachodesh</em>), <em>Yomim Tovim</em> in Hebrew or Latin chars, and
 /// has various settings. Sample full date output includes (using various options):
-/// <ul>
-/// <li>21 Shevat, 5729</li>
-/// <li>כא שבט תשכט</li>
-/// <li>כ״א שבט ה׳תשכ״ט</li>
-/// <li>כ״א שבט תש״פ or כ״א שבט תש״ף</li>
-/// <li>כ׳ שבט ו׳ אלפים</li>
-/// </ul>
+/// <list type="bullet">
+/// <item><description>21 Shevat, 5729</description></item>
+/// <item><description>כא שבט תשכט</description></item>
+/// <item><description>כ״א שבט ה׳תשכ״ט</description></item>
+/// <item><description>כ״א שבט תש״פ or כ״א שבט תש״ף</description></item>
+/// <item><description>כ׳ שבט ו׳ אלפים</description></item>
+/// </list>
 /// </summary>
 /// <seealso cref="JewishDate"/>
 /// <seealso cref="JewishCalendar"/>
@@ -329,7 +329,7 @@ public class HebrewDateFormatter
             "Isru Chag"};
 
     /// <summary>
-    /// Returns the array of <em>Yomim Tovim</em> (holidays) transliterated into Latin chars. This is used by the <see cref="FormatYomTov"/> when formatting the <em>Yom Tov</em> String. The default list of months usesnAshkenazi
+    /// Returns the array of <em>Yomim Tovim</em> (holidays) transliterated into Latin chars. This is used by the <see cref="FormatYomTov"/> when formatting the <em>Yom Tov</em> string. The default list of months usesnAshkenazi
     /// pronunciation in typical American English spelling. The default list is currently
     /// <c>["Erev Pesach", "Pesach", "Chol Hamoed Pesach", "Pesach Sheni", "Erev Shavuos", "Shavuos", "Seventeenth of Tammuz",
     /// "Tishah B'Av", "Tu B'Av", "Erev Rosh Hashana", "Rosh Hashana", "Fast of Gedalyah", "Erev Yom Kippur", "Yom Kippur", "Erev
@@ -341,7 +341,7 @@ public class HebrewDateFormatter
     ///         by the default.</value>
     /// <remarks>
     /// Sets the array of <em>Yomim Tovim</em> (holidays) transliterated into Latin chars. This is used by the
-    /// <see cref="FormatYomTov"/> when formatting the <em>Yom Tov</em> String. The list uses the following order and uses
+    /// <see cref="FormatYomTov"/> when formatting the <em>Yom Tov</em> string. The list uses the following order and uses
     /// the spelling as follows.
     /// <c>["Erev Pesach", "Pesach", "Chol Hamoed Pesach", "Pesach Sheni", "Erev Shavuos", "Shavuos", "Seventeenth of Tammuz",
     /// "Tishah B'Av", "Tu B'Av", "Erev Rosh Hashana", "Rosh Hashana", "Fast of Gedalyah", "Erev Yom Kippur", "Yom Kippur", "Erev
@@ -405,7 +405,7 @@ public class HebrewDateFormatter
     /// Formats the <em>Yom Tov</em> (holiday) in Hebrew or transliterated Latin characters.
     /// </summary>
     /// <param name="jewishCalendar">the JewishCalendar</param>
-    /// <returns>the formatted <em>Yom Tov</em> (holiday) or an empty String if the day is not a <em>Yom Tov</em> (holiday).</returns>
+    /// <returns>the formatted <em>Yom Tov</em> (holiday) or an empty string if the day is not a <em>Yom Tov</em> (holiday).</returns>
     /// <seealso cref="IsHebrewFormat"/>
     public string FormatYomTov(JewishCalendar jewishCalendar)
     {
@@ -421,11 +421,11 @@ public class HebrewDateFormatter
 
     /// <summary>
     /// Formats a day as Rosh Chodesh in the format of in the format of ראש חודש שבט or Rosh Chodesh Shevat. If it is not Rosh Chodesh,
-    /// an empty <c>String</c> will be returned.
+    /// an empty <c>string</c> will be returned.
     /// </summary>
     /// <param name="jewishCalendar">the JewishCalendar</param>
-    /// <returns>The formatted <c>String</c> in the format of ראש חודש שבט or Rosh Chodesh Shevat. If it is not Rosh Chodesh, an
-    ///         empty <c>String</c> will be returned.</returns>
+    /// <returns>The formatted <c>string</c> in the format of ראש חודש שבט or Rosh Chodesh Shevat. If it is not Rosh Chodesh, an
+    ///         empty <c>string</c> will be returned.</returns>
     public string FormatRoshChodesh(JewishCalendar jewishCalendar)
     {
         if (!jewishCalendar.IsRoshChodesh())
@@ -727,11 +727,11 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns a String of the Omer day in the form ל״ג בעומר if Hebrew Format is set, or "Omer X" or "Lag B'Omer" if not. An empty
+    /// Returns a string of the Omer day in the form ל״ג בעומר if Hebrew Format is set, or "Omer X" or "Lag B'Omer" if not. An empty
     /// string if there is no Omer this day.
     /// </summary>
     /// <param name="jewishCalendar">the JewishCalendar to be formatted</param>
-    /// <returns>a String of the Omer day in the form or an empty string if there is no Omer this day. The default formatting has a
+    /// <returns>a string of the Omer day in the form or an empty string if there is no Omer this day. The default formatting has a
     /// ב prefix that would output בעומר, but this can be set via the <see cref="HebrewOmerPrefix"/> method to use a ל and
     ///         output ל״ג לעומר.</returns>
     /// <seealso cref="IsHebrewFormat"/>
@@ -768,7 +768,7 @@ public class HebrewDateFormatter
     /// return השג (Rosh Hashana on Thursday, Shelaimim, and Pesach on Tuesday).
     /// </summary>
     /// <param name="jewishYear">the Jewish year</param>
-    /// <returns>the Hebrew String such as בשה for 5729 (1969) and השג for 5771 (2011).</returns>
+    /// <returns>the Hebrew string such as בשה for 5729 (1969) and השג for 5771 (2011).</returns>
     public string GetFormattedKviah(int jewishYear)
     {
         JewishDate jewishDate = new JewishDate(jewishYear, JewishDate.Tishrei, 1); // set date to Rosh Hashana
@@ -836,18 +836,18 @@ public class HebrewDateFormatter
 
     /// <summary>
     /// Returns a Hebrew formatted string of a number. The method can calculate from 0 to 9999.
-    /// <ul>
-    /// <li>Single digit numbers such as 3, 30 and 100 will be returned with a ׳ (<a
-    /// href="http://en.wikipedia.org/wiki/Geresh">Geresh</a>) appended as at the end. For example ג׳, ל׳ and ק׳</li>
-    /// <li>multi digit numbers such as 21 and 769 will be returned with a ״ (<a
+    /// <list type="bullet">
+    /// <item><description>Single digit numbers such as 3, 30 and 100 will be returned with a ׳ (<a
+    /// href="http://en.wikipedia.org/wiki/Geresh">Geresh</a>) appended as at the end. For example ג׳, ל׳ and ק׳</description></item>
+    /// <item><description>multi digit numbers such as 21 and 769 will be returned with a ״ (<a
     /// href="http://en.wikipedia.org/wiki/Gershayim">Gershayim</a>) between the second to last and last letters. For
-    /// example כ״א, תשכ״ט</li>
-    /// <li>15 and 16 will be returned as ט״ו and ט״ז</li>
-    /// <li>Single digit numbers (years assumed) such as 6000 (%1000=0) will be returned as ו׳אלפים</li>
-    /// <li>0 will return אפס</li>
-    /// </ul>
+    /// example כ״א, תשכ״ט</description></item>
+    /// <item><description>15 and 16 will be returned as ט״ו and ט״ז</description></item>
+    /// <item><description>Single digit numbers (years assumed) such as 6000 (%1000=0) will be returned as ו׳אלפים</description></item>
+    /// <item><description>0 will return אפס</description></item>
+    /// </list>
     /// </summary>
-    /// <param name="number">the number to be formatted. It will throw an IllegalArgumentException if the number is &lt; 0 or &gt; 9999.</param>
+    /// <param name="number">the number to be formatted. An <see cref="ArgumentException"/> is thrown if the number is &lt; 0 or &gt; 9999.</param>
     /// <returns>the Hebrew formatted number such as תשכ״ט</returns>
     /// <seealso cref="UseFinalFormLetters"/>
     /// <seealso cref="UseGershGershayim"/>
@@ -989,8 +989,8 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns a String with the name of the current parshah(iyos). This method gets the current <em>parshah</em> by calling <see cref="JewishCalendar.GetParshah"/> that does not return a <em>parshah</em> for any non-<em>Shabbos</em> or a <em>Shabbos</em> that
-    /// occurs on a <em>Yom Tov</em>, and will return an empty <c>String</c> in those cases. If the class <see cref="IsHebrewFormat">is set to format in Hebrew</see> it will return a <c>String</c> of the current parshah(iyos) in Hebrew for
+    /// Returns a string with the name of the current parshah(iyos). This method gets the current <em>parshah</em> by calling <see cref="JewishCalendar.GetParshah"/> that does not return a <em>parshah</em> for any non-<em>Shabbos</em> or a <em>Shabbos</em> that
+    /// occurs on a <em>Yom Tov</em>, and will return an empty <c>string</c> in those cases. If the class <see cref="IsHebrewFormat">is set to format in Hebrew</see> it will return a <c>string</c> of the current parshah(iyos) in Hebrew for
     /// example בראשית or נצבים וילך for a double parshah, or an empty string will be returned if there is not parshah that week. If not set
     /// to Hebrew, it returns a string of the parshah(iyos) transliterated into Latin chars. The default uses Ashkenazi pronunciation
     /// in typical American English spelling, for example Bereshis, Nitzavim Vayeilech for a double parshah, An empty string if there
@@ -998,10 +998,10 @@ public class HebrewDateFormatter
     /// </summary>
     /// <param name="jewishCalendar">the JewishCalendar Object</param>
     /// <returns>today's parshah(iyos) in Hebrew for example, if the formatter is set to format in Hebrew, returns a string of the current
-    ///         parshah(iyos) in Hebrew for example בראשית or נצבים וילך, for a double parshah or an empty <c>String</c> if there is
+    ///         parshah(iyos) in Hebrew for example בראשית or נצבים וילך, for a double parshah or an empty <c>string</c> if there is
     ///         no parshah that week. If not set to Hebrew, it returns a string of the parshah(iyos) transliterated into Latin chars. The
     ///         default uses Ashkenazi pronunciation in typical American English spelling, for example Bereshis, Nitzavim Vayeilech for
-    ///         a double parshah, or an empty <c>String</c> if there are none.</returns>
+    ///         a double parshah, or an empty <c>string</c> if there are none.</returns>
     /// <seealso cref="FormatParshah(JewishCalendar)"/>
     /// <seealso cref="IsHebrewFormat"/>
     /// <seealso cref="JewishCalendar.GetParshah"/>
@@ -1012,13 +1012,13 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns a <c>String</c> with the name of the current parshah(iyos). This method overloads <see cref="FormatParshah(JewishCalendar)"/> and unlike that method, it will format the <em>parshah</em> passed to this method regardless of
+    /// Returns a <c>string</c> with the name of the current parshah(iyos). This method overloads <see cref="FormatParshah(JewishCalendar)"/> and unlike that method, it will format the <em>parshah</em> passed to this method regardless of
     /// the day of week. This is the way to format a <em>parshah</em> retrieved from calling
     /// <see cref="JewishCalendar.GetUpcomingParshah"/>.
     /// </summary>
     /// <param name="parshah">a JewishCalendar.Parshah object</param>
-    /// <returns>today's parshah(iyos) in Hebrew for example, if the formatter is set to format in Hebrew, returns a <c>String</c>
-    ///         of the current parshah(iyos) in Hebrew for example בראשית or נצבים וילך for a double parshah, or an empty <c>String</c>
+    /// <returns>today's parshah(iyos) in Hebrew for example, if the formatter is set to format in Hebrew, returns a <c>string</c>
+    ///         of the current parshah(iyos) in Hebrew for example בראשית or נצבים וילך for a double parshah, or an empty <c>string</c>
     ///         if there is no parshah that week. If not set to Hebrew, it returns a string of the parshah(iyos) transliterated into
     ///         Latin chars. The default uses Ashkenazi pronunciation in typical American English spelling, for example Bereshis,  or
     ///         Nitzavim Vayeilech for a double parshah, or an empty string if there are none.</returns>
@@ -1030,7 +1030,7 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns a String with the name of the current special parshah of Shekalim, Zachor, Parah or Hachodesh or an empty String for a
+    /// Returns a string with the name of the current special parshah of Shekalim, Zachor, Parah or Hachodesh or an empty string for a
     /// non-special parshah. If the formatter is set to format in Hebrew, it returns a string of the current special parshah in Hebrew,
     /// for example שקלים, זכור, פרה or החדש, or an empty <c>string</c> if the date is not a special parshah. If not set to Hebrew,
     /// it returns a string of the special parshah transliterated into Latin chars. The default uses Ashkenazi pronunciation in typical

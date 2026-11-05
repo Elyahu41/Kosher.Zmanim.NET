@@ -217,7 +217,7 @@ public class ZmanimFormatter
     /// <param name="instant">the <see cref="DateTimeOffset"/> to format.</param>
     /// <param name="timeZone">the <see cref="TimeZoneInfo"/> used to help format based on the <see cref="DateTimeOffset"/>'s DST and
     ///         other settings.</param>
-    /// <returns>the formatted String</returns>
+    /// <returns>the formatted string</returns>
     /// <seealso cref="FormatXSDateTime"/>
     public string FormatInstant(DateTimeOffset instant, TimeZoneInfo timeZone)
     {
@@ -236,11 +236,11 @@ public class ZmanimFormatter
     }
 
     /// <summary>
-    /// This returns the xml representation of an xsd:duration object. This uses the same ISO-8601 format as
-    /// <c>java.time.Duration.toString()</c> in KosherJava (e.g., "<c>PT1H30M</c>").
+    /// This returns the xml representation of an xsd:duration object. This uses the ISO-8601 format that
+    /// KosherJava's <c>Duration.toString()</c> uses (e.g., "<c>PT1H30M</c>").
     /// </summary>
     /// <param name="duration">the duration to format</param>
-    /// <returns>the xsd:duration ISO-8601 formatted String</returns>
+    /// <returns>the xsd:duration ISO-8601 formatted string</returns>
     public string FormatXSDDurationTime(TimeSpan? duration)
     {
         return duration == null ? string.Empty : JavaTime.DurationToString(duration);

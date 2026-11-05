@@ -43,11 +43,11 @@ namespace Kosher.Zmanim.HebrewCalendar;
 /// </summary>
 /// <remarks>
 /// <b>To do:</b> The following items may be added at a future date.
-/// <ol>
-/// <li><em>Lamnatzaiach</em></li>
-/// <li><em>Selichos</em></li>
-/// <li>...</li>
-/// </ol>
+/// <list type="number">
+/// <item><description><em>Lamnatzaiach</em></description></item>
+/// <item><description><em>Selichos</em></description></item>
+/// <item><description>...</description></item>
+/// </list>
 /// </remarks>
 public class TefilaRules
 {

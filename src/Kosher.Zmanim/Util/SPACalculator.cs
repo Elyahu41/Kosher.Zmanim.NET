@@ -24,25 +24,25 @@ namespace Kosher.Zmanim.Util;
 /// and azimuth. Its stated uncertainty is ±0.0003° (about one arc-second) for the years −2000 to +6000.
 /// <para><b>Refraction is fully configurable through the parent <see cref="AstronomicalCalculator"/>.</b> Many SPA ports hardcode their
 /// refraction model (and even their solar radius); this one does not:
-/// <ul>
-/// <li><b>Sunrise / sunset (the geometric 90° zenith only).</b> The horizon geometry is taken entirely from the parent's <see cref="AstronomicalCalculator.AdjustZenith"/>: <see cref="AstronomicalCalculator.Refraction"/> / <see cref="AstronomicalCalculator.Refraction"/> (default 0.5667° / 34′);
+/// <list type="bullet">
+/// <item><description><b>Sunrise / sunset (the geometric 90° zenith only).</b> The horizon geometry is taken entirely from the parent's <see cref="AstronomicalCalculator.AdjustZenith"/>: <see cref="AstronomicalCalculator.Refraction"/> / <see cref="AstronomicalCalculator.Refraction"/> (default 0.5667° / 34′);
 ///     the solar radius - the date-based <see cref="AstronomicalCalculator.GetApparentSolarRadius"/> by default (it varies slightly day to day), or the
 ///     fixed <see cref="AstronomicalCalculator.SolarRadius"/> (default 0.26667° / 16′) when <see cref="AstronomicalCalculator.UseApparentSolarRadius"/> is <c>false</c>;
 ///     and the <see cref="AstronomicalCalculator.GetElevationAdjustment">elevation dip</see>. SPA's own atmospheric refraction is <em>not</em> applied on this
 ///     path - the calculator solves for the geometric (parallax-included, un-refracted) center of the Sun reaching the parent-supplied
 ///     zenith, exactly as <see cref="NOAACalculator"/> and <see cref="MeeusCalculator"/> do. The parent only adds these corrections when the
 ///     zenith is exactly 90°, so <see cref="AstronomicalCalculator.Refraction"/> and <see cref="AstronomicalCalculator.SolarRadius"/> change sunrise / sunset (and any
-///     90°-based time) and nothing else.</li>
-/// <li><b>Twilight and depression-angle <em>zmanim</em> (e.g. <em>alos</em> / <em>tzais</em> at 16.1°, 19.8°).</b> These pass a zenith
+///     90°-based time) and nothing else.</description></item>
+/// <item><description><b>Twilight and depression-angle <em>zmanim</em> (e.g. <em>alos</em> / <em>tzais</em> at 16.1°, 19.8°).</b> These pass a zenith
 ///     other than 90°, so <see cref="AstronomicalCalculator.AdjustZenith"/> adds nothing: no refraction, no solar radius. The time is
 ///     solved for the Sun's <em>true geometric</em> depression, as such <em>zmanim</em> are defined. None of <see cref="AstronomicalCalculator.Refraction"/>, <see cref="AstronomicalCalculator.SolarRadius"/>, <see cref="Pressure"/> or <see cref="Temperature"/>
-///     affect them.</li>
-/// <li><b>Instantaneous <see cref="GetSolarElevation">elevation</see> / <see cref="GetSolarAzimuth">azimuth</see> only.</b> Here the full SPA (Reda-Andreas / Sæmundsson) atmospheric-refraction model is used, with its horizon
+///     affect them.</description></item>
+/// <item><description><b>Instantaneous <see cref="GetSolarElevation">elevation</see> / <see cref="GetSolarAzimuth">azimuth</see> only.</b> Here the full SPA (Reda-Andreas / Sæmundsson) atmospheric-refraction model is used, with its horizon
 ///     parameter taken from the parent's <see cref="AstronomicalCalculator.Refraction"/> and the <see cref="Pressure">pressure</see> and <see cref="Temperature">temperature</see> settable. <b>These two settings affect this path and only this path</b> - they have no
 ///     effect on sunrise, sunset, twilight or any depression-angle <em>zman</em>. (Note that within the KosherJava calendar nothing
 ///     calls  <see cref="GetSolarElevation"/> / <see cref="GetSolarAzimuth"/>; they are direct-query
-///     methods, so in normal calendar use the pressure and temperature settings are inert.)</li>
-/// </ul></para>
+///     methods, so in normal calendar use the pressure and temperature settings are inert.)</description></item>
+/// </list></para>
 /// <para><b>ΔT</b> (TT − UT) is integral to SPA and is applied here. It defaults to an Espenak-Meeus estimate but can be overridden
 /// exactly via <see cref="DeltaTOverride"/> (the published SPA test case fixes ΔT = 67 seconds), or disabled via <see cref="ApplyDeltaT"/>.</para>
 /// <para><b>Topocentric note.</b> Unlike <see cref="NOAACalculator.GetSolarElevation"/> (sea-level, altitude-independent),
@@ -1111,7 +1111,7 @@ public class SPACalculator : AstronomicalCalculator
     }
 
     /// <summary>
-    /// Return the <a href="https://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a Java <see cref="DateOnly"/>.
+    /// Return the <a href="https://en.wikipedia.org/wiki/Julian_day">Julian day</a> from a <see cref="DateOnly"/>.
     /// Julian day for 0h UT of the date (Meeus chapter 7).
     /// </summary>
     /// <param name="localDate">the <see cref="DateOnly"/> to get the Julian date for.</param>
@@ -1622,7 +1622,7 @@ public class SPACalculator : AstronomicalCalculator
     /// <see cref="Pressure"/> and <see cref="Temperature"/> values are identical.
     /// </summary>
     /// <param name="obj">the reference object with which to compare</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> if <paramref name="obj"/> is equal to this instance; otherwise <c>false</c>.</returns>
     public override bool Equals(object? obj)
     {
         if (!base.Equals(obj))
@@ -1640,7 +1640,7 @@ public class SPACalculator : AstronomicalCalculator
     /// This implementation hashes the <c>applyDeltaT</c>, <c>deltaTOverride</c>, <c>pressure</c>, and <c>temperature</c>
     /// properties to maintain the contract with <see cref="Equals"/>.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>a hash code for this instance.</returns>
     public override int GetHashCode()
     {
         return HashCode.Combine(base.GetHashCode(), applyDeltaT, deltaTOverride, pressure, temperature);

@@ -41,14 +41,14 @@ namespace Kosher.Zmanim;
 /// (the calculations are based on the astronomical definition of sunrise and sunset calculated in a vacuum with the solar radius
 /// above the horizon), and are therefore not impacted by the use of elevation. For additional information on the <em>halachic</em>
 /// impact of elevation on <em>zmanim</em> see:
-/// <ul>
-/// <li><a href="https://www.nli.org.il/en/books/NNL_ALEPH002542826/NLI">Zmanei Halacha Lema'aseh</a> 4th edition by <a href=
+/// <list type="bullet">
+/// <item><description><a href="https://www.nli.org.il/en/books/NNL_ALEPH002542826/NLI">Zmanei Halacha Lema'aseh</a> 4th edition by <a href=
 /// "http://beinenu.com/rabbis/%D7%94%D7%A8%D7%91-%D7%99%D7%93%D7%99%D7%93%D7%99%D7%94-%D7%9E%D7%A0%D7%AA">Rabbi Yedidya Manat</a>.
-/// See section 1, pages 11-12 for a very concise write-up, with details in section 2, pages 37 - 63 and 133 - 151.</li>
-/// <li><a href="https://www.worldcat.org/oclc/1158574217">Zmanim Kehilchasam</a> 7th edition, by Rabbi Dovid Yehuda Burstein,  vol 1,
-/// chapter 2, pages 95 - 188.</li>
-/// <li><a href="https://www.worldcat.org/oclc/36089452">Hazmanim Bahalacha</a> by Rabbi Chaim Benish , perek 7, pages 53 - 63.</li>
-/// </ul>
+/// See section 1, pages 11-12 for a very concise write-up, with details in section 2, pages 37 - 63 and 133 - 151.</description></item>
+/// <item><description><a href="https://www.worldcat.org/oclc/1158574217">Zmanim Kehilchasam</a> 7th edition, by Rabbi Dovid Yehuda Burstein,  vol 1,
+/// chapter 2, pages 95 - 188.</description></item>
+/// <item><description><a href="https://www.worldcat.org/oclc/36089452">Hazmanim Bahalacha</a> by Rabbi Chaim Benish , perek 7, pages 53 - 63.</description></item>
+/// </list>
 /// <para><b>Note:</b> It is important to read the technical notes on top of the <see cref="AstronomicalCalculator"/> documentation
 /// before using this code.</para>
 /// <para>I would like to thank <a href="https://www.worldcat.org/search?q=au%3AShakow%2C+Yaakov">Rabbi Yaakov Shakow</a>, the
@@ -286,7 +286,7 @@ public class ZmanimCalendar : AstronomicalCalendar
     /// <summary>
     /// This method returns <see cref="AstronomicalCalendar.GetSunTransit()">Astronomical <em>chatzos hayom</em></see> if the
     /// <see cref="AstronomicalCalculator">calculator</see> class used supports it and
-    /// <see cref="UseAstronomicalChatzos">isUseAstronomicalChatzos()</see> is set to <c>true</c> or the <see cref="GetChatzosHayomAsHalfDay">halfway point between sunrise and sunset</see> if it does not support it, or it is not configured to use it. There are currently
+    /// <see cref="UseAstronomicalChatzos"/> is set to <c>true</c> or the <see cref="GetChatzosHayomAsHalfDay">halfway point between sunrise and sunset</see> if it does not support it, or it is not configured to use it. There are currently
     /// four <see cref="AstronomicalCalculator">calculators</see> available in the API. The default <see cref="NOAACalculator">NOAA calculator</see>, the <see cref="SPACalculator">SPA calculator</see>
     /// and the <see cref="MeeusCalculator">Meeus calculator</see> calculate it as <see cref="AstronomicalCalendar.GetSunTransit()">astronomical
     /// <em>chatzos</em></see>, while the <see cref="SunTimesCalculator">USNO calculator</see> calculates <em>chatzos</em>
@@ -330,7 +330,7 @@ public class ZmanimCalendar : AstronomicalCalendar
     /// returned by the calendar, that may actually be after midnight of the day it is being calculated for). For example, if
     /// calculating it for the date of <em>Erev Pesach</em>, the calculation will be for <em>Lail Pesach</em> to allow you to use the
     /// <em>zman</em> as <em>sof zman achilas afikoman</em>. <see cref="AstronomicalCalendar.GetSolarMidnight">Astronomical <em>chatzos halayla</em></see> will be
-    /// returned if the <see cref="AstronomicalCalculator">calculator</see> class used supports it and <see cref="UseAstronomicalChatzos">isUseAstronomicalChatzos()</see> is set to <c>true</c>. Otherwise the <see cref="GetChatzos">halfway point</see> between sunset and the following day's sunrise, if it does not support it, or it is not configured to
+    /// returned if the <see cref="AstronomicalCalculator">calculator</see> class used supports it and <see cref="UseAstronomicalChatzos"/> is set to <c>true</c>. Otherwise the <see cref="GetChatzos">halfway point</see> between sunset and the following day's sunrise, if it does not support it, or it is not configured to
     /// use it. There are currently four <see cref="AstronomicalCalculator">calculators</see> available in the API.
     /// The default <see cref="NOAACalculator">NOAA calculator</see>, the <see cref="SPACalculator">SPA calculator</see> and the <see cref="MeeusCalculator">Meeus
     /// calculator</see> calculate it as <see cref="AstronomicalCalendar.GetSolarMidnight">astronomical <em>chatzos halayla</em></see>, while the <see cref="SunTimesCalculator">USNO calculator</see> calculates <em>chatzos halayla</em> as halfway between sunset
@@ -1200,7 +1200,7 @@ public class ZmanimCalendar : AstronomicalCalendar
 
 
     /// <summary>
-    /// This is a utility method to determine if the current Instant passed in has a <em>melacha</em> (work) prohibition.
+    /// This is a utility method to determine if the <see cref="DateTimeOffset"/> passed in has a <em>melacha</em> (work) prohibition.
     /// Since there are many opinions on the time of <em>tzais</em>, the <em>tzais</em> for the current day has to be passed to this
     /// class. Sunset is the classes current day's <see cref="GetSunsetBasedOnElevationSetting">elevation adjusted sunset</see> that observes the
     /// <see cref="UseElevation"/> settings. The <see cref="JewishCalendar.InIsrael"/> will be set by the inIsrael parameter. Since there
