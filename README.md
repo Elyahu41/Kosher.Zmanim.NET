@@ -234,7 +234,7 @@ Disclaimer:
 __While I did my best to get accurate results, please double check before relying on these zmanim for <em>halacha lemaaseh</em>__.
 
 ------------------------
-[![NuGet](https://img.shields.io/nuget/v/Kosher.Zmanim?color=eed6af&logo=nuget)](https://www.nuget.org/packages/Kosher.Zmanim)
+[![NuGet](https://img.shields.io/nuget/v/Kosher.Zmanim?color=eed6af&logo=nuget&cacheSeconds=3600)](https://www.nuget.org/packages/Kosher.Zmanim)
 [![GitHub](https://img.shields.io/github/license/Elyahu41/Kosher.Zmanim.NET?color=eed6af&logo=gnu)](https://github.com/Elyahu41/Kosher.Zmanim.NET/blob/main/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Elyahu41/Kosher.Zmanim.NET?logo=github)](https://github.com/Elyahu41/Kosher.Zmanim.NET/commits/main)
 [![Build](https://github.com/Elyahu41/Kosher.Zmanim.NET/actions/workflows/build.yml/badge.svg)](https://github.com/Elyahu41/Kosher.Zmanim.NET/actions/workflows/build.yml)
