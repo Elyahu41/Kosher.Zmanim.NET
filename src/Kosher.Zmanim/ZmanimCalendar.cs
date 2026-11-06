@@ -562,23 +562,25 @@ public class ZmanimCalendar : AstronomicalCalendar
     /// <summary>
     /// A method to return candle lighting time, calculated as <see cref="CandleLightingOffset"/> minutes before <see cref="AstronomicalCalendar.GetSeaLevelSunset">sea level sunset</see>. This will return the time for any day of the week, since it can be used to calculate
     /// candle lighting time for <em>Yom Tov</em> (mid-week holidays) as well. Elevation adjustments are intentionally not performed
-    /// by this method, but you can calculate it by passing the elevation adjusted sunset to <see cref="AstronomicalCalendar.GetTimeOffset"/>. If the calculated time is before <see cref="GetPlagHaminchaGRA"><em>plag hamincha</em></see> (on very short winter days),
-    /// a <c>null</c> will be returned.
+    /// by this method, but you can calculate it by passing the elevation adjusted sunset to <see cref="AstronomicalCalendar.GetTimeOffset"/>. Candles can't be lit
+    /// before <see cref="GetPlagHaminchaGRA"><em>plag hamincha</em></see>, so if the calculated time is before it (on very short
+    /// winter days), <em>plag hamincha</em> is returned instead. (KosherJava returns <c>null</c> in that case.)
     /// </summary>
-    /// <returns>candle lighting time. If the calculation can't be computed such as in the Arctic Circle where there is at
-    ///         least one day a year where the sun does not rise, and one where it does not set, or if it is before <see cref="GetPlagHaminchaGRA"><em>plag hamincha</em></see> on very short winter days, a <c>null</c> will be returned.
-    ///         See detailed explanation on top of the <see cref="AstronomicalCalendar"/> documentation.</returns>
+    /// <returns>candle lighting time, or <see cref="GetPlagHaminchaGRA"><em>plag hamincha</em></see> if that is later. If the
+    ///         calculation can't be computed such as in the Arctic Circle where there is at least one day a year where the sun does
+    ///         not rise, and one where it does not set, a <c>null</c> will be returned. See detailed explanation on top of the
+    ///         <see cref="AstronomicalCalendar"/> documentation.</returns>
     /// <seealso cref="AstronomicalCalendar.GetSeaLevelSunset"/>
     /// <seealso cref="CandleLightingOffset"/>
-    /// <seealso cref="CandleLightingOffset"/>
+    /// <seealso cref="GetPlagHaminchaGRA"/>
     public virtual DateTimeOffset? GetCandleLighting()
     {
         long totalNanos = JavaMath.ToLong(-CandleLightingOffset * MinuteNanos);
         DateTimeOffset? candleLighting = GetTimeOffset(GetSeaLevelSunset(), JavaTime.DurationOfNanos(totalNanos));
         DateTimeOffset? plagHamincha = GetPlagHaminchaGRA();
         if (candleLighting != null && plagHamincha != null && candleLighting.IsBefore(plagHamincha))
-        { // very short winter day
-            return null;
+        { // very short winter day: candles can't be lit before plag hamincha
+            return ToZone(plagHamincha);
         }
         return ToZone(candleLighting);
     }

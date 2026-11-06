@@ -271,14 +271,24 @@ public class ZmanimFormatter
     public string FormatXSDateTime(DateTimeOffset instant) => FormatXsdDateTime(instant);
 
     /// <summary>
-    /// This returns the xml representation of an xsd:duration object. This uses the ISO-8601 format that
-    /// KosherJava's <c>Duration.toString()</c> uses (e.g., "<c>PT1H30M</c>").
+    /// This returns the xml representation of an xsd:duration object, in the standard XSD ISO-8601 format (e.g.,
+    /// "<c>PT1H30M</c>", or "<c>-PT1H30M</c>" for a negative duration).
     /// </summary>
     /// <param name="duration">the duration to format</param>
     /// <returns>the xsd:duration ISO-8601 formatted string</returns>
     public string FormatXsdDurationTime(TimeSpan? duration)
     {
-        return duration == null ? string.Empty : JavaTime.DurationToString(duration);
+        if (duration == null)
+        {
+            return string.Empty;
+        }
+        if (duration.Value < TimeSpan.Zero && duration.Value != TimeSpan.MinValue)
+        {
+            // java.time's Duration.toString() writes a negative duration with a sign on every field ("PT-1H-30M"), which isn't
+            // a valid xsd:duration. XSD puts a single sign in front of the whole value.
+            return "-" + JavaTime.DurationToString(duration.Value.Negate());
+        }
+        return JavaTime.DurationToString(duration);
     }
 
     /// <summary>The KosherJava name of <see cref="FormatXsdDurationTime"/>.</summary>
@@ -334,13 +344,13 @@ public class ZmanimFormatter
         }
         sb.Append(" date=\"").Append(meta.Date).Append('"');
         sb.Append(" type=\"").Append(meta.Type).Append('"');
-        sb.Append(" algorithm=\"").Append(meta.Algorithm).Append('"');
-        sb.Append(" location=\"").Append(meta.Location).Append('"');
+        sb.Append(" algorithm=\"").Append(EscapeXml(meta.Algorithm)).Append('"');
+        sb.Append(" location=\"").Append(EscapeXml(meta.Location)).Append('"');
         sb.Append(" latitude=\"").Append(meta.Latitude).Append('"');
         sb.Append(" longitude=\"").Append(meta.Longitude).Append('"');
         sb.Append(" elevation=\"").Append(meta.Elevation).Append('"');
-        sb.Append(" timeZoneName=\"").Append(meta.TimeZoneName).Append('"');
-        sb.Append(" timeZoneID=\"").Append(meta.TimeZoneId).Append('"');
+        sb.Append(" timeZoneName=\"").Append(EscapeXml(meta.TimeZoneName)).Append('"');
+        sb.Append(" timeZoneID=\"").Append(EscapeXml(meta.TimeZoneId)).Append('"');
         sb.Append(" timeZoneOffset=\"").Append(meta.TimeZoneOffset).Append('"');
         sb.Append(">\n");
 
@@ -404,13 +414,13 @@ public class ZmanimFormatter
         var sb = new StringBuilder("{\n\"metadata\":{\n");
         sb.Append("\t\"date\":\"").Append(meta.Date).Append("\",\n");
         sb.Append("\t\"type\":\"").Append(meta.Type).Append("\",\n");
-        sb.Append("\t\"algorithm\":\"").Append(meta.Algorithm).Append("\",\n");
-        sb.Append("\t\"location\":\"").Append(meta.Location).Append("\",\n");
+        sb.Append("\t\"algorithm\":\"").Append(EscapeJson(meta.Algorithm)).Append("\",\n");
+        sb.Append("\t\"location\":\"").Append(EscapeJson(meta.Location)).Append("\",\n");
         sb.Append("\t\"latitude\":\"").Append(meta.Latitude).Append("\",\n");
         sb.Append("\t\"longitude\":\"").Append(meta.Longitude).Append("\",\n");
         sb.Append("\t\"elevation\":\"").Append(meta.Elevation).Append("\",\n");
-        sb.Append("\t\"timeZoneName\":\"").Append(meta.TimeZoneName).Append("\",\n");
-        sb.Append("\t\"timeZoneID\":\"").Append(meta.TimeZoneId).Append("\",\n");
+        sb.Append("\t\"timeZoneName\":\"").Append(EscapeJson(meta.TimeZoneName)).Append("\",\n");
+        sb.Append("\t\"timeZoneID\":\"").Append(EscapeJson(meta.TimeZoneId)).Append("\",\n");
         sb.Append("\t\"timeZoneOffset\":\"").Append(meta.TimeZoneOffset).Append('"');
         sb.Append("},\n\"");
         if (meta.RootName != null)
@@ -442,6 +452,73 @@ public class ZmanimFormatter
     }
 
     /// <summary>The header values shared by <see cref="ToXml"/> and <see cref="ToJson"/>.</summary>
+    /// <summary>
+    /// Escapes text for use in XML element content or a double quoted attribute value: <c>&amp;</c>, <c>&lt;</c>, <c>&gt;</c>,
+    /// <c>"</c> and <c>'</c> are replaced by their predefined entities. A <c>null</c> is written as "<c>null</c>", like KosherJava.
+    /// </summary>
+    /// <param name="text">the text to escape</param>
+    /// <returns>the escaped text</returns>
+    internal static string EscapeXml(string? text)
+    {
+        if (text == null)
+        {
+            return "null";
+        }
+        var sb = new StringBuilder(text.Length);
+        foreach (char c in text)
+        {
+            sb.Append(c switch
+            {
+                '&' => "&amp;",
+                '<' => "&lt;",
+                '>' => "&gt;",
+                '"' => "&quot;",
+                '\'' => "&apos;",
+                _ => c.ToString(),
+            });
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Escapes text for use inside a JSON string: <c>"</c> and <c>\</c> are backslash escaped and control characters are written
+    /// as escape sequences, as RFC 8259 requires. A <c>null</c> is written as "<c>null</c>", like KosherJava.
+    /// </summary>
+    /// <param name="text">the text to escape</param>
+    /// <returns>the escaped text</returns>
+    internal static string EscapeJson(string? text)
+    {
+        if (text == null)
+        {
+            return "null";
+        }
+        var sb = new StringBuilder(text.Length);
+        foreach (char c in text)
+        {
+            switch (c)
+            {
+                case '"': sb.Append("\\\""); break;
+                case '\\': sb.Append("\\\\"); break;
+                case '\n': sb.Append("\\n"); break;
+                case '\r': sb.Append("\\r"); break;
+                case '\t': sb.Append("\\t"); break;
+                case '\b': sb.Append("\\b"); break;
+                case '\f': sb.Append("\\f"); break;
+                default:
+                    if (c < 0x20)
+                    {
+                        sb.Append("\\u").Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
+                    }
+                    else
+                    {
+                        sb.Append(c);
+                    }
+                    break;
+            }
+        }
+        return sb.ToString();
+    }
+
     private sealed record Metadata(string? RootName, string Date, string Type, string Algorithm, string? Location, string Latitude,
         string Longitude, string Elevation, string TimeZoneName, string TimeZoneId, string TimeZoneOffset);
 

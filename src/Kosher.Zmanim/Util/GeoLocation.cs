@@ -613,14 +613,14 @@ public class GeoLocation : IEquatable<GeoLocation>
     public string ToXml()
     {
         return "<GeoLocation>\n" +
-                "\t<LocationName>" + LocationName + "</LocationName>\n" +
+                "\t<LocationName>" + ZmanimFormatter.EscapeXml(LocationName) + "</LocationName>\n" +
                 "\t<Latitude>" + JavaMath.ToJavaString(Latitude) + "</Latitude>\n" +
                 "\t<Longitude>" + JavaMath.ToJavaString(Longitude) + "</Longitude>\n" +
                 "\t<Elevation>" + JavaMath.ToJavaString(Elevation) + " Meters" + "</Elevation>\n" +
                 "\t<HorizonElevationAtSunrise>" + JavaMath.ToJavaString(HorizonElevationAtSunrise) + " Meters" + "</HorizonElevationAtSunrise>\n" +
                 "\t<HorizonElevationAtSunset>" + JavaMath.ToJavaString(HorizonElevationAtSunset) + " Meters" + "</HorizonElevationAtSunset>\n" +
-                "\t<TimezoneName>" + TimeZone.Id + "</TimezoneName>\n" +
-                "\t<TimeZoneDisplayName>" + TimeZone.StandardName + "</TimeZoneDisplayName>\n" +
+                "\t<TimezoneName>" + ZmanimFormatter.EscapeXml(TimeZone.Id) + "</TimezoneName>\n" +
+                "\t<TimeZoneDisplayName>" + ZmanimFormatter.EscapeXml(TimeZone.StandardName) + "</TimeZoneDisplayName>\n" +
                 "</GeoLocation>";
     }
 

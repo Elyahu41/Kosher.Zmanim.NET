@@ -231,7 +231,7 @@ public class Zman
         TimeZoneInfo zone = GeoLocation == null ? TimeZoneInfo.Utc : GeoLocation.TimeZone;
         var sb = new StringBuilder();
         sb.Append("<Zman>\n");
-        sb.Append("\t<Label>").Append(JavaTime.NullToString(Label)).Append("</Label>\n");
+        sb.Append("\t<Label>").Append(ZmanimFormatter.EscapeXml(Label)).Append("</Label>\n");
         sb.Append("\t<Zman>").Append(Time is DateTimeOffset t
             ? JavaTime.InZone(t, zone).ToString("yyyy-MM-dd'T'HH:mm:ss.fff", CultureInfo.InvariantCulture) : string.Empty).Append("</Zman>\n");
         if (GeoLocation != null)
@@ -239,7 +239,7 @@ public class Zman
             sb.Append('\t').Append(GeoLocation.ToXml().Replace("\n", "\n\t"));
         }
         sb.Append("\n\t<Duration>").Append(JavaTime.DurationToString(Duration)).Append("</Duration>\n");
-        sb.Append("\t<Description>").Append(JavaTime.NullToString(Description)).Append("</Description>\n");
+        sb.Append("\t<Description>").Append(ZmanimFormatter.EscapeXml(Description)).Append("</Description>\n");
         sb.Append("</Zman>");
         return sb.ToString();
     }

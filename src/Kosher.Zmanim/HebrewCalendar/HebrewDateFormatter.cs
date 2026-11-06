@@ -834,7 +834,7 @@ public class HebrewDateFormatter
     }
 
     /// <summary>
-    /// Returns a Hebrew formatted string of a number. The method can calculate from 0 to 9999.
+    /// Returns a Hebrew formatted string of a number. The method can calculate from 0 to 999,999.
     /// <list type="bullet">
     /// <item><description>Single digit numbers such as 3, 30 and 100 will be returned with a ׳ (<a
     /// href="http://en.wikipedia.org/wiki/Geresh">Geresh</a>) appended as at the end. For example ג׳, ל׳ and ק׳</description></item>
@@ -843,10 +843,13 @@ public class HebrewDateFormatter
     /// example כ״א, תשכ״ט</description></item>
     /// <item><description>15 and 16 will be returned as ט״ו and ט״ז</description></item>
     /// <item><description>Single digit numbers (years assumed) such as 6000 (%1000=0) will be returned as ו׳אלפים</description></item>
+    /// <item><description>From 10,000 the thousands are written with the same letters as other numbers, for example י׳ אלפים for
+    /// 10,000 and (with <see cref="UseLongHebrewYears">long years</see>) יב׳ שמ״ה for 12,345. This allows formatting the Jewish years of
+    /// dates past the Gregorian year 6239.</description></item>
     /// <item><description>0 will return אפס</description></item>
     /// </list>
     /// </summary>
-    /// <param name="number">the number to be formatted. An <see cref="ArgumentException"/> is thrown if the number is &lt; 0 or &gt; 9999.</param>
+    /// <param name="number">the number to be formatted. An <see cref="ArgumentException"/> is thrown if the number is &lt; 0 or &gt; 999,999.</param>
     /// <returns>the Hebrew formatted number such as תשכ״ט</returns>
     /// <seealso cref="UseFinalFormLetters"/>
     /// <seealso cref="UseGershGershayim"/>
@@ -857,9 +860,9 @@ public class HebrewDateFormatter
         {
             throw new ArgumentException("negative numbers can't be formatted");
         }
-        else if (number > 9999)
+        else if (number > 999_999)
         {
-            throw new ArgumentException("numbers > 9999 can't be formatted");
+            throw new ArgumentException("numbers > 999,999 can't be formatted");
         }
 
         string Alafim = "אלפים";
@@ -884,7 +887,7 @@ public class HebrewDateFormatter
         // append thousands to String
         if (number % 1000 == 0)
         { // in year is 5000, 4000 etc
-            sb.Append(jOnes[thousands]);
+            sb.Append(FormatThousands(thousands, jHundreds, jTens, jOnes, tavTaz));
             if (UseGershGershayim)
             {
                 sb.Append(Geresh);
@@ -895,7 +898,7 @@ public class HebrewDateFormatter
         }
         else if (useLonghebrewYears && number >= 1000)
         { // if alafim boolean display thousands
-            sb.Append(jOnes[thousands]);
+            sb.Append(FormatThousands(thousands, jHundreds, jTens, jOnes, tavTaz));
             if (UseGershGershayim)
             {
                 sb.Append(Geresh); // append thousands quote
@@ -952,6 +955,36 @@ public class HebrewDateFormatter
             { // append double quote before last digit
                 sb.Insert(sb.Length - 1, Gershayim);
             }
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns the thousands of a number as Hebrew letters, without a <em>geresh</em>: a single letter for 1 to 9 thousand (for
+    /// example ה for 5,000), and the same letters as for other numbers from 10 thousand on (for example יב for 12,000, with טו / טז
+    /// for 15 and 16).
+    /// </summary>
+    /// <param name="thousands">the number of thousands, 1 to 999</param>
+    /// <param name="jHundreds">the letters for the hundreds</param>
+    /// <param name="jTens">the letters for the tens</param>
+    /// <param name="jOnes">the letters for the ones</param>
+    /// <param name="tavTaz">the letters for 15 and 16</param>
+    /// <returns>the letters</returns>
+    private static string FormatThousands(int thousands, string[] jHundreds, string[] jTens, string[] jOnes, string[] tavTaz)
+    {
+        var sb = new StringBuilder(jHundreds[thousands / 100]);
+        int rest = thousands % 100;
+        if (rest == 15)
+        {
+            sb.Append(tavTaz[0]);
+        }
+        else if (rest == 16)
+        {
+            sb.Append(tavTaz[1]);
+        }
+        else
+        {
+            sb.Append(jTens[rest / 10]).Append(jOnes[rest % 10]);
         }
         return sb.ToString();
     }

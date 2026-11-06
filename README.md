@@ -177,6 +177,8 @@ the usual .NET naming conventions applied:
   `getJewishYear()` is `JewishYear`, `setHebrewFormat(true)` is `IsHebrewFormat = true`). A few names had to change because .NET does
   not allow a member to have the name of its class: `Zman.getZman()` is `Zman.Time` and `Daf.getDaf()` is `Daf.DafNumber`;
   `GeoLocation.getZoneId()` is `GeoLocation.TimeZone`.
+* `GetCandleLighting()` never returns a time before *plag hamincha*: on very short winter days, when candle lighting would be
+  before it, it returns `GetPlagHaminchaGRA()` (KosherJava returns `null`).
 * Names that refer to Java types use the .NET type instead: `getMoladAsInstant()` is `GetMoladAsDateTimeOffset()`,
   `getTekufaAsInstant()` is `GetTekufaAsDateTimeOffset()`, `ZmanimFormatter.formatInstant()` is `ZmanimFormatter.Format()`, and
   `formatXSDateTime()` / `formatXSDDurationTime()` are `FormatXsdDateTime()` / `FormatXsdDurationTime()`. The KosherJava names

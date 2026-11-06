@@ -17,6 +17,20 @@ Fixes for differences from KosherJava found by differential fuzzing (random inpu
 * `GetSunTransit(DateTimeOffset?, DateTimeOffset?)` returned the right instant but in the offset of its `startOfDay` argument;
   it is now in the location's time zone like every other zman.
 
+Behavior changes and additions:
+* `GetCandleLighting()` returns *plag hamincha* (`GetPlagHaminchaGRA()`) when candle lighting would be before it (very short
+  winter days near the Arctic Circle), instead of `null` like KosherJava. It still returns `null` when there is no sunset.
+* New `JewishCalendar.IsShmitaYear()` and `JewishCalendar.IsRegularTaanis()` (a fast day other than Yom Kippur), from KosherSwift.
+
+Fixes for KosherJava bugs (also proposed upstream):
+* `SPACalculator` returns `NaN` right away when the target zenith is `NaN` (a `NaN` / infinite zenith, refraction or solar
+  radius, or a negative earth radius) instead of searching for hours.
+* `ZmanimFormatter.ToXml()` / `ToJson()`, `GeoLocation.ToXml()` and `Zman.ToXml()` escape text, so a location name, label or
+  description with `"`, `&`, `<` or `\` no longer produces invalid XML or JSON.
+* `ZmanimFormatter.FormatXsdDurationTime()` writes negative durations as a valid `xs:duration` (`-PT1H30M`, not `PT-1H-30M`).
+* `HebrewDateFormatter.FormatHebrewNumber()` formats numbers up to 999,999 (it threw above 9999), so dates whose Jewish year is
+  10,000 or more (Gregorian 6240 on) can be formatted in Hebrew.
+
 ## 3.1.1 (2026-11-05)
 * Renamed members whose names referred to Java types or used Java casing, keeping the old names as `[Obsolete]` aliases so
   existing code still compiles:

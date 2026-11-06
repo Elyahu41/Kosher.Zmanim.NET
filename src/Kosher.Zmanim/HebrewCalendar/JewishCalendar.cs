@@ -1489,6 +1489,31 @@ public class JewishCalendar : JewishDate
     }
 
     /// <summary>
+    /// Return true if the day is a Taanis (fast day) other than <em>Yom Kippur</em>: <em>17 of Tammuz</em>, <em>Tisha B'Av</em>,
+    /// the <em>Fast of Gedalyah</em>, the <em>10 of Teves</em> and the <em>Fast of Esther</em>. Use <see cref="IsTaanis"/> to include
+    /// <em>Yom Kippur</em>. (Not in KosherJava; from KosherSwift.)
+    /// </summary>
+    /// <returns>true if today is a fast day and not <em>Yom Kippur</em></returns>
+    /// <seealso cref="IsTaanis"/>
+    public virtual bool IsRegularTaanis()
+    {
+        int holidayIndex = GetYomTovIndex();
+        return holidayIndex == SeventeenOfTammuz || holidayIndex == TishaBeav || holidayIndex == FastOfGedalyah
+                || holidayIndex == TenthOfTeves || holidayIndex == FastOfEsther;
+    }
+
+    /// <summary>
+    /// Returns true if the current Jewish year is a <em>shmita</em> (sabbatical) year, a year divisible by 7 (for example 5782).
+    /// Note that according to Rashi and other <em>Rishonim</em>, the year before is the year of <em>shmita</em>. (Not in KosherJava;
+    /// from KosherSwift.)
+    /// </summary>
+    /// <returns>true if the current Jewish year is a <em>shmita</em> year</returns>
+    public virtual bool IsShmitaYear()
+    {
+        return JewishYear % 7 == 0;
+    }
+
+    /// <summary>
     /// Return true if the day is <em>Taanis Bechoros</em> (on <em>Erev Pesach</em>). It will return true for the 14th
     /// of <em>Nissan</em> if it is not on <em>Shabbos</em>, or if the 12th of <em>Nissan</em> occurs on a Thursday.
     /// </summary>
