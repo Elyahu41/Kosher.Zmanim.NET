@@ -57,6 +57,28 @@ internal static class JavaMath
         return value - floor >= 0.5 ? result + 1 : result;
     }
 
+    /// <summary>
+    /// Equivalent of Java's <c>(long)</c> cast of a <see cref="double"/>: truncates toward zero, <see cref="double.NaN"/> becomes 0
+    /// and values outside the <see cref="long"/> range saturate. A plain C# cast only behaves this way on .NET 9 and later; on
+    /// .NET 8 a NaN, infinite or out of range value gives an unspecified result (<see cref="long.MinValue"/> on x64).
+    /// </summary>
+    public static long ToLong(double value)
+    {
+        if (double.IsNaN(value))
+        {
+            return 0;
+        }
+        if (value >= 9.2233720368547758E18)
+        {
+            return long.MaxValue;
+        }
+        if (value <= -9.2233720368547758E18)
+        {
+            return long.MinValue;
+        }
+        return (long)value;
+    }
+
     /// <summary>Equivalent of <c>Math.round(float)</c> for <see cref="int"/> results.</summary>
     public static int RoundToInt(double value) => (int)Round(value);
 

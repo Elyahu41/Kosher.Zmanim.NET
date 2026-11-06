@@ -573,7 +573,7 @@ public class ZmanimCalendar : AstronomicalCalendar
     /// <seealso cref="CandleLightingOffset"/>
     public virtual DateTimeOffset? GetCandleLighting()
     {
-        long totalNanos = (long)(-CandleLightingOffset * MinuteNanos);
+        long totalNanos = JavaMath.ToLong(-CandleLightingOffset * MinuteNanos);
         DateTimeOffset? candleLighting = GetTimeOffset(GetSeaLevelSunset(), JavaTime.DurationOfNanos(totalNanos));
         DateTimeOffset? plagHamincha = GetPlagHaminchaGRA();
         if (candleLighting != null && plagHamincha != null && candleLighting.IsBefore(plagHamincha))
@@ -1131,7 +1131,7 @@ public class ZmanimCalendar : AstronomicalCalendar
             return null;
         }
 
-        long totalNanos = (long)(shaahZmanis.ToNanos() * hours);
+        long totalNanos = JavaMath.ToLong(shaahZmanis.ToNanos() * hours);
         TimeSpan? offsetDuration = JavaTime.DurationOfNanos(totalNanos);
 
         if (hours > 0)
@@ -1329,7 +1329,7 @@ public class ZmanimCalendar : AstronomicalCalendar
             return null;
         }
 
-        long totalNanos = (long)(shaahZmanis.ToNanos() * hours);
+        long totalNanos = JavaMath.ToLong(shaahZmanis.ToNanos() * hours);
         return ToZone(GetTimeOffset(startOfDay, JavaTime.DurationOfNanos(totalNanos)));
     }
 
@@ -1415,7 +1415,7 @@ public class ZmanimCalendar : AstronomicalCalendar
             return null;
         }
 
-        long totalNanos = (long)(shaahZmanis.ToNanos() * hours);
+        long totalNanos = JavaMath.ToLong(shaahZmanis.ToNanos() * hours);
         TimeSpan? offsetDuration = JavaTime.DurationOfNanos(totalNanos);
 
         if (hours >= 0)

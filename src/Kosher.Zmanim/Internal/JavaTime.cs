@@ -99,6 +99,24 @@ internal static class JavaTime
     /// <summary>The calendar date of <paramref name="time"/> in <paramref name="zone"/>.</summary>
     public static DateOnly LocalDateIn(DateTimeOffset time, TimeZoneInfo zone) => DateOnly.FromDateTime(InZone(time, zone).DateTime);
 
+    /// <summary>
+    /// The proleptic Gregorian (ISO) year and month of an epoch day, for any epoch day (like
+    /// <c>LocalDate.ofEpochDay(day).getYear()</c> / <c>getMonthValue()</c>, without <see cref="DateOnly"/>'s 1..9999 limit).
+    /// </summary>
+    public static (long Year, int Month) YearMonthOfEpochDay(long epochDay)
+    {
+        // Howard Hinnant's civil_from_days, with 400-year eras starting on March 1
+        long z = epochDay + 719468;
+        long era = JavaMath.FloorDiv(z, 146097);
+        long dayOfEra = z - era * 146097;
+        long yearOfEra = (dayOfEra - dayOfEra / 1460 + dayOfEra / 36524 - dayOfEra / 146096) / 365;
+        long dayOfYear = dayOfEra - (365 * yearOfEra + yearOfEra / 4 - yearOfEra / 100);
+        long mp = (5 * dayOfYear + 2) / 153;
+        int month = (int)(mp < 10 ? mp + 3 : mp - 9);
+        long year = yearOfEra + era * 400 + (month <= 2 ? 1 : 0);
+        return (year, month);
+    }
+
     /// <summary>Equivalent of <c>LocalDate.ofEpochDay(long)</c>.</summary>
     public static DateOnly DateOfEpochDay(long epochDay) => DateOnly.FromDayNumber(checked((int)(epochDay + 719162)));
 

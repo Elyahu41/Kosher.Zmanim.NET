@@ -511,7 +511,7 @@ public class AstronomicalCalendar
         {
             return null;
         }
-        return GetTimeOffset(startOfDay, temporalHour.MultipliedBy(6));
+        return ToZone(GetTimeOffset(startOfDay, temporalHour.MultipliedBy(6)));
     }
 
     /// <summary>
@@ -662,7 +662,7 @@ public class AstronomicalCalendar
             return double.NaN;
         }
 
-        TimeSpan? offsetDuration = JavaTime.DurationOfNanos((long)(-minutes * MinuteNanos));
+        TimeSpan? offsetDuration = JavaTime.DurationOfNanos(JavaMath.ToLong(-minutes * MinuteNanos));
         DateTimeOffset? offsetByTime = GetTimeOffset(seaLevelSunrise, offsetDuration);
         long offsetByTimeMilli = offsetByTime.ToEpochMilli();
         double degrees = 0.0;
@@ -727,7 +727,7 @@ public class AstronomicalCalendar
             return double.NaN;
         }
 
-        TimeSpan? offsetDuration = JavaTime.DurationOfNanos((long)(minutes * MinuteNanos));
+        TimeSpan? offsetDuration = JavaTime.DurationOfNanos(JavaMath.ToLong(minutes * MinuteNanos));
         DateTimeOffset? offsetByTime = GetTimeOffset(seaLevelSunset, offsetDuration);
         long offsetByTimeMilli = offsetByTime.ToEpochMilli();
         double degrees = 0.0;
@@ -774,7 +774,7 @@ public class AstronomicalCalendar
     public virtual DateTimeOffset? GetLocalMeanTime(TimeOnly localTime)
     {
         DateTimeOffset? localMeanTime = new DateTimeOffset(GetAdjustedLocalDate().ToDateTime(localTime, DateTimeKind.Unspecified), TimeSpan.Zero);
-        long totalNanos = (long)(GeoLocation.Longitude * 4 * MinuteNanos);
+        long totalNanos = JavaMath.ToLong(GeoLocation.Longitude * 4 * MinuteNanos);
         return ToZone(GetTimeOffset(localMeanTime, JavaTime.DurationOfNanos(-totalNanos)));
     }
 

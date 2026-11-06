@@ -1684,7 +1684,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
         {
             return null;
         }
-        long totalNanos = (long)(-shaahZmanis.ToNanos() * 2.5);
+        long totalNanos = JavaMath.ToLong(-shaahZmanis.ToNanos() * 2.5);
         return ToZone(NullIfAfterSunset(GetTimeOffset(GetTzaisGeonim3Point8Degrees(), JavaTime.DurationOfNanos(totalNanos))));
     }
 
@@ -2001,7 +2001,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
         {
             return null;
         }
-        long totalNanos = (long)(-shaahZmanis.ToNanos() * 1.25);
+        long totalNanos = JavaMath.ToLong(-shaahZmanis.ToNanos() * 1.25);
         return ToZone(NullIfAfterSunset(GetTimeOffset(GetTzaisGeonim3Point8Degrees(), JavaTime.DurationOfNanos(totalNanos))));
     }
 
@@ -2082,7 +2082,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
             return null;
         }
         TimeSpan? alosToSunrise = JavaTime.Between(alos19Point8, sunrise);
-        long totalNanos = (long)(alosToSunrise.ToNanos() * (5 / 18d));
+        long totalNanos = JavaMath.ToLong(alosToSunrise.ToNanos() * (5 / 18d));
         return ToZone(GetTimeOffset(GetSunsetBasedOnElevationSetting(), JavaTime.DurationOfNanos(totalNanos)));
     }
 
@@ -2567,7 +2567,7 @@ public class ComprehensiveZmanimCalendar : ZmanimCalendar
     /// <seealso cref="AteretTorahSunsetOffset"/>
     public virtual DateTimeOffset? GetTzaisAteretTorah()
     {
-        long totalNanos = (long)(AteretTorahSunsetOffset * MinuteNanos);
+        long totalNanos = JavaMath.ToLong(AteretTorahSunsetOffset * MinuteNanos);
         return ToZone(GetTimeOffset(GetSunsetBasedOnElevationSetting(), JavaTime.DurationOfNanos(totalNanos)));
     }
 

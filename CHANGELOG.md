@@ -4,6 +4,19 @@ The version numbers of Kosher.Zmanim.NET follow the [KosherJava](https://github.
 port of. See the [KosherJava CHANGELOG](https://github.com/KosherJava/zmanim/blob/master/CHANGELOG.md) for the changes in the
 calculations themselves.
 
+## Unreleased
+Fixes for differences from KosherJava found by differential fuzzing (random inputs replayed against KosherJava 3.1.0):
+* .NET 8: non-finite or out of range values (for example `AteretTorahSunsetOffset = double.NaN`, or
+  `GetSunsetSolarDipFromOffset(double.PositiveInfinity)`) gave wrong results, such as a *sha'ah zmanis* of −8,895 days. Converting
+  a `double` to `long` now follows Java's rules (NaN is 0, out of range values saturate) on every runtime; .NET 9 and later
+  already behaved this way.
+* `SPACalculator`: the ΔT estimate converted the Julian day through `DateOnly`, so a rise / set search that evaluated a date
+  before year 1 threw `ArgumentOutOfRangeException` where KosherJava returns a result (for example
+  `GetPercentOfShaahZmanisFromDegrees(118.79, true)` on 2076-02-29 in Etc/GMT-14). The year and month are now computed
+  directly, for the same range of years as `java.time`.
+* `GetSunTransit(DateTimeOffset?, DateTimeOffset?)` returned the right instant but in the offset of its `startOfDay` argument;
+  it is now in the location's time zone like every other zman.
+
 ## 3.1.1 (2026-11-05)
 * Renamed members whose names referred to Java types or used Java casing, keeping the old names as `[Obsolete]` aliases so
   existing code still compiles:

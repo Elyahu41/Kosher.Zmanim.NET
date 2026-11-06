@@ -387,7 +387,7 @@ public class GeoLocation : IEquatable<GeoLocation>
     public long GetLocalMeanTimeOffset(DateTimeOffset instant)
     {
         long timezoneOffsetMillis = (long)zoneId.GetUtcOffset(instant).TotalSeconds * 1000L;
-        return (long)(Longitude * 4 * MinuteMillis - timezoneOffsetMillis);
+        return JavaMath.ToLong(Longitude * 4 * MinuteMillis - timezoneOffsetMillis);
     }
 
     /// <summary>

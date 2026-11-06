@@ -1365,8 +1365,16 @@ public class SPACalculator : AstronomicalCalculator
     /// <returns>ΔT in seconds</returns>
     private static double EstimateDeltaT(double julianDay)
     {
-        DateOnly date = JavaTime.DateOfEpochDay((long)Math.Floor(julianDay - 2440587.5));
-        return EstimateDeltaTForYear(date.Year + (date.Month - 0.5) / 12);
+        // java.time's LocalDate.ofEpochDay covers any year, but DateOnly stops at 1..9999 and the rise / set searches can
+        // evaluate far from the requested date, so the proleptic Gregorian year and month are computed directly.
+        long epochDay = JavaMath.ToLong(Math.Floor(julianDay - 2440587.5));
+        if (epochDay < -365243219162L || epochDay > 365241780471L)
+        {
+            // the range of java.time's LocalDate (years -999,999,999 to 999,999,999); KosherJava throws DateTimeException
+            throw new ArgumentOutOfRangeException(nameof(julianDay), julianDay, "The date is outside the supported range of years.");
+        }
+        (long year, int month) = JavaTime.YearMonthOfEpochDay(epochDay);
+        return EstimateDeltaTForYear(year + (month - 0.5) / 12);
     }
 
     /// <summary>
